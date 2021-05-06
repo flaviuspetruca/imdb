@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #0b004d !important;
+  max-height: 100vh;
+  display: flex;
+  font-weight: 400;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,label,span {
+  font-weight: 500;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+body, html, .App, #root, .auth-wrapper {
+  width: 100%;
+  max-height: 100%;
+}
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 75px;
+}
+
+.auth-inner {
+  min-width: 450px;
+  margin: auto;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 40px 55px 45px 55px;
+  border-radius: 30px;
+  transition: all .3s;
+  margin-top: 10vh;
+}
+
+.auth-wrapper .form-control:focus {
+  border-color: #167bff;
+  box-shadow: none;
+
+}
+
+.auth-wrapper h3 {
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+  padding-bottom: 20px;
+}
+
+.custom-control-label {
+  font-weight: 400;
+}
+
+.forgot-password,
+.forgot-password a {
+  text-align: right;
+  font-size: 13px;
+  padding-top: 10px;
+  color: #7f7d7d;
+  margin: 0;
+}
+
+.forgot-password a {
+  color: #167bff;
+}
+
+.submit{
+  background: #603ff5;
+  border: 0;
+  border-radius: 40px;
+  height: 40px;
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.submit:hover{
+  background: #5533a3;
+}
+
+.form-control-create{
+  font-size: 20px !important;
+  color: rgba(255, 255, 255, 0.815) !important;
+  background-color: rgb(80, 80, 80) !important;
+  outline: none !important;
+  border: 0 !important;
+}
+
+form-control-create::placeholder{
+  color: rgba(255, 255, 255, 0.568) !important;
+  opacity: 1;
+}
+
+.create-label{
+  color: rgba(255, 255, 255, 0.795) !important;
+  opacity: 1;
+}
+
+
+.form-control:focus{
+  outline: none !important;
+}
+
+.navbrand{
+  margin-right: 100rem;
+  font-weight: 800 !important;
+  font-size: 40px !important;
+  color:white !important;
+}
+
+.navbar{
+  background: rgb(0,0,0);
+  background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(5,5,82,1) 97%, rgba(11,0,77,1) 100%);
+  color: white !important;
+}
+
+.navlink{
+  font-weight: 300 !important;
+  font-size: 25px !important;
+  color: rgb(185, 185, 185) !important;
+}
+
+.navlink:hover{
+  font-weight: 600 !important;
+  padding: 5px;
+  transition: all 0.2s ease-in-out !important;
+  background-color: #3522a6 !important;
+  color: rgb(255, 255, 255) !important;
+  /* border-radius: 30px !important; */
+}
+
+.logout{
+  border-radius: 20px !important;
+}
