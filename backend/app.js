@@ -10,7 +10,9 @@ const reset = require('./auth/reset')
 
 require('dotenv').config();
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/imdb');
+mongoose.connect(process.env.AUTH, { useNewUrlParser: true }, ()=>{
+    console.log("Connected To USERDB!");
+})
 
 const cors = require('cors');
 app.use(cors());
