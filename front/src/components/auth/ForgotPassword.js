@@ -38,29 +38,33 @@ const ForgotPassword = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-                <h3>Forgot password?</h3>
+        <div className="auth-wrapper">
+            <div className="auth-inner">
+                <form onSubmit={handleSubmit}>
+                        <h3>Forgot password?</h3>
 
-                <div className="form-group">
-                    <label>Enter your email address</label>
-                    <input type="email" 
-                        className="form-control" 
-                        placeholder="Enter email"  
-                        style={emailInput}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </div>
-                { 
-                    sent === "NotSent" ? 
-                    <h5 className="text-center text-danger mx-3">Couldn't Reset ResetPassword</h5>
-                    :
-                    sent === "Sent"? 
-                    <h5 className="text-center text-success mx-3">Check your email!</h5>
-                    :<div></div>
-                }
-                    <button type="submit" className="btn-block submit" onClick={sendRequest}>Submit</button>
+                        <div className="form-group">
+                            <label>Enter your email address</label>
+                            <input type="email" 
+                                className="form-control" 
+                                placeholder="Enter email"  
+                                style={emailInput}
+                                onChange={e => setEmail(e.target.value)}
+                            />
+                        </div>
+                        { 
+                            sent === "NotSent" ? 
+                            <h5 className="text-center text-danger mx-3">Couldn't Reset ResetPassword</h5>
+                            :
+                            sent === "Sent"? 
+                            <h5 className="text-center text-success mx-3">Check your email!</h5>
+                            :<div></div>
+                        }
+                            <button type="submit" className="btn-block submit" onClick={sendRequest}>Submit</button>
 
-            </form>   
+                </form>
+            </div>
+        </div> 
     );
 }
  

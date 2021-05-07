@@ -11,7 +11,7 @@ const registerSchema = new Schema({
     expireAt: {
         type: Date,
         default: Date.now,
-        expires: 60
+        expires: 900
       },
 })
 //createdAt: { type: Date, expires: 70, default: Date.now },

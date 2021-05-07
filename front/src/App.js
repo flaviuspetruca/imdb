@@ -7,6 +7,10 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Confirm from './components/auth/Confirm';
 import DashBoard from './components/DashBoard';
+import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
+import NotFound from './components/NotFound';
+
 
 function App() {
 
@@ -35,11 +39,9 @@ function App() {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/confirm/:token" component={Confirm}/>
-        <Route component={() => <Login setToken={handleLogin}/>} />
-        {/* <Route path="/forgotpassword" component={ForgotPassword} />
+        <Route path="/forgotpassword" component={ForgotPassword} />
         <Route path="/resetpass/:token" component={ResetPassword} />
-        <Route path="/sh/:link" component={Redirect} />
-      */}
+        <Route component={() => <Login setToken={handleLogin}/>} />
         </Switch>
       </Router>
     </div>
@@ -62,6 +64,7 @@ function App() {
       <Router>
       <Switch>       
       <Route path="/" component={DashBoard} />
+      <Route component={NotFound} />
       </Switch>
       </Router>
     </div>

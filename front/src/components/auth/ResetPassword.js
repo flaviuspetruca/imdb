@@ -48,40 +48,44 @@ const ResetPassword = () => {
     function handleSubmit(event) {
         event.preventDefault();
     }
-    return ( 
-    <form onSubmit={handleSubmit}>
-        <h3>Set your new password</h3>
+    return (
+        <div className="auth-wrapper">
+            <div className="auth-inner">
+                <form onSubmit={handleSubmit}>
+                    <h3>Set your new password</h3>
 
-        <div className="form-group">
-            <label>New password</label>
-            <input type="password" 
-                className="form-control" 
-                placeholder="Enter new password"  
-                style={passwordInput}
-                onChange={e => setPassword(e.target.value)}
-            />
+                    <div className="form-group">
+                        <label>New password</label>
+                        <input type="password" 
+                            className="form-control" 
+                            placeholder="Enter new password"  
+                            style={passwordInput}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Confirm new password</label>
+                        <input type="password" 
+                            className="form-control" 
+                            placeholder="Confirm new password"  
+                            style={passwordInput}
+                            onChange={e => setRePassword(e.target.value)}
+                        />
+                    </div>
+                    { 
+                        sent === "NotSent" ? 
+                        <h5 className="text-center text-danger mx-3">Couldn't set new password</h5>
+                        :
+                        sent === "Sent"? 
+                        <h5 className="text-center text-success mx-3">Password updated!</h5>
+                        :<div></div>
+                    }
+
+                    <button type="submit" className="btn-block submit" onClick={sendRequest}>Submit</button>
+
+                </form>
+            </div>
         </div>
-        <div className="form-group">
-            <label>Confirm new password</label>
-            <input type="password" 
-                className="form-control" 
-                placeholder="Confirm new password"  
-                style={passwordInput}
-                onChange={e => setRePassword(e.target.value)}
-            />
-        </div>
-        { 
-            sent === "NotSent" ? 
-            <h5 className="text-center text-danger mx-3">Couldn't set new password</h5>
-            :
-            sent === "Sent"? 
-            <h5 className="text-center text-success mx-3">Password updated!</h5>
-            :<div></div>
-        }
-
-        <button type="submit" className="btn-block submit" onClick={sendRequest}>Submit</button>
-
-    </form>
     );
 }
  
