@@ -6,7 +6,8 @@ const login = require("./auth/login");
 const register = require("./auth/register");
 const confirm = require('./auth/confirm');
 const forgot = require('./auth/forgot');
-const reset = require('./auth/reset')
+const reset = require('./auth/reset');
+const populate = require('./populate/populate');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -35,6 +36,11 @@ app.post('/forgotpass', (req, res) => {
 
 app.post('/resetpass', (req, res) => {
     reset(req, res);
+})
+
+//Temporary endpoint to populate database
+app.post('/populate', (req, res) => {
+    populate(req, res);
 })
 
 

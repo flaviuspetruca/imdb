@@ -10,7 +10,8 @@ const bookSchema = new Schema({
     publishedDate: String,
     categories: [],
     thumbnail: String,
-    ratingAverage: Number,
+    description: String,
+    averageRating: { type: Number, default: 0},
     reviewsCount: { type: Number, default: 0 },
     reviews: [
         {
@@ -20,7 +21,8 @@ const bookSchema = new Schema({
             descirption: { type: String, default: '' },
             publishedAt: Date
         }
-    ]
+    ],
+    purchaseLink: String
 })
 
 const Book = mongoose.model('book', bookSchema);
