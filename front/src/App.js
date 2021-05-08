@@ -63,7 +63,7 @@ function App() {
 
       <Router>
       <Switch>       
-      <Route path="/" component={DashBoard} />
+      <Route path="/" component={() => <DashBoard logOut={logOut}/>} />
       <Route component={NotFound} />
       </Switch>
       </Router>
