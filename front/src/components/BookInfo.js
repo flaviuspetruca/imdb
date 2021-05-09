@@ -5,6 +5,7 @@ import Review from './Review';
 const BookInfo = () => {
 
     const [book, setBook] = useState('');
+    const [date, setDate] = useState('');
     const bookId = useParams();
     const token = localStorage.getItem('token');
     const data = {token, _id: bookId};
@@ -32,9 +33,12 @@ const BookInfo = () => {
 
     if(book === '')
         return(
-            <div className="spinner-border spinner-border-xl" role="status">
-            <span className="sr-only">Loading...</span>
+            <div className="container dashboard-container text-center">
+            <h1 className="text-light">Loading book...&#128214;</h1>
+            <div className="spinner-border spinner-border-xl text-light" role="status">
+                <span className="sr-only">Loading...</span>
             </div>
+        </div>
         );
     else
         if(book !== false)
@@ -43,15 +47,25 @@ const BookInfo = () => {
                 <div className="book-inner"> 
                     <div className="row">
                         <div className="col-sm-6">
-                            <h2>{book.title}</h2>
-                            <img src={book.thumbnail} className="bigThumbnail"></img>
-                            <h5 className="mt-3">Authors</h5>
-                            {book.authors.map( a => <p>{a}</p> )}
-                            <h5>Published On: </h5>
-                            <p>{book.publishedDate}</p>
+                        <div className="col-sm-12">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <h2>{book.title}</h2>
+                                    <img src={book.thumbnail} className="bigThumbnail"></img>
+                                </div>
+                            </div>
+                            <div className="row mt-3">
+                                <div className="col-sm-12">
+                                    <a href={book.purchaseLink} 
+                                        className="btn btn-light"
+                                        target="_blank"
+                                    >Buy from here</a>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                         <div className="col-sm-6">
-                            <div className="row">
+                            <div className="row mt-5">
                                 <div className="col-sm-12">
                                     <h4>Genre</h4>
                                 </div>
@@ -65,33 +79,31 @@ const BookInfo = () => {
                                 }
                                 </div>
                             </div>
-                            <div className="row mt-5">
-                                <div className="col-sm-12">
+                            <div className="row mt-2 review">
+                                <div className="col-sm-12 mt-3">
                                     <h2>Description</h2>
                                     <p>{book.description}</p>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-sm-12">
-                                    <a  href={book.purchaseLink} 
-                                        className="btn btn-light"
-                                        target="_blank"
-                                    >Buy from here</a>
+                            <div className="row mt-2 review">
+                                <div className="col-sm-12 mt-3">
+                                    <h5 className="mt-3">Authors</h5>
+                                    <p>{book.authors.map( a => `${a}, ` )}</p>
+                                    <h5>Published On: </h5>
+                                    <p>{book.publishedDate}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row mt-3">
-                        <div className="col-sm-12">
+                    <div className="row review">
+                        <div className="col-sm-12 mt-3">
                         <h5>Reviews</h5>
+                        <button className="btn btn-primary addReview">Add review</button>
                         {
                             book.reviewsCount > 0 ?
-                            book.review.map(r => <Review key={r._id} content={r}></Review>)
+                            book.reviews.map(r => <Review key={r._id} content={r}></Review>)
                             :
-                            <>
-                            <button className="btn btn-primary addReview">Add review</button>
                             <h6>There are no reviews. Be the first one?</h6>
-                            </>
                         }
                         </div>
                     </div>

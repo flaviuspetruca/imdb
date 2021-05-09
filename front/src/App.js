@@ -11,6 +11,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import NotFound from './components/NotFound';
 import BookInfo from './components/BookInfo';
+import NavBar from './NavBar';
 
 
 function App() {
@@ -50,18 +51,7 @@ function App() {
   else
   return (
     <div className="App">
-       <Navbar expand="lg" fixed="top" className="navbar">
-        <Container>
-          <Navbar.Brand className="navbrand" href="/">IBDB</Navbar.Brand>
-          <Nav className="mr-auto ml-5">
-            <Nav.Link className="text-center navlink" href="#">Drama</Nav.Link>
-            <Nav.Link className="text-center navlink" href="#">Detective</Nav.Link>
-            <Nav.Link className="text-center navlink" href="#">Romance</Nav.Link>
-          </Nav>
-              <button className="btn btn-light logout" onClick={logOut}>Log Out</button>
-        </Container>
-      </Navbar>
-
+      <NavBar logOut={logOut}/>
       <Router>
       <Switch>       
       <Route path="/" exact component={() => <DashBoard logOut={logOut}/>} />

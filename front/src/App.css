@@ -142,7 +142,7 @@ form-control-create::placeholder{
 .book{
   border: 5px;
   border-radius: 20px;
-  border-color: rgb(78, 2, 255); 
+  border-color: rgb(64, 9, 128); 
   border-style: solid;
   height: 200px;
   width: 150px;
@@ -196,11 +196,40 @@ form-control-create::placeholder{
   background-color: rgb(241, 241, 241) !important;
 }
 
+.cancelBtn{
+  border-radius: 20px !important;
+}
+
+.deleteBtn{
+  margin-top: 1rem;
+  color: rgb(255, 0, 0) !important;
+  background-color: rgb(44, 44, 44) !important;
+  border-radius: 20px !important;
+  margin-right: 2px;
+}
+
+.deleteBtn:hover{
+  background-color: rgb(255, 0, 0) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
 .addReview:hover{
   background-color: rgb(211, 211, 211) !important;
 }
 
 .bigThumbnail{
+  margin-top: 1.5rem;
   height: 350px;
   width: 250px;
+}
+
+.review{
+  border-top: 2px solid #4949490e !important;
+  margin-top: 10px;
+}
+
+.buyHere{
+  position:absolute;
+  bottom:0;
+  left:0;
 }
