@@ -48,13 +48,14 @@ app.post('/populate', (req, res) => {
     populate(req, res);
 })
 
-app.get('/categories', (req, res) => {
+app.post('/categories', (req, res) => {
     getByCategory(req, res);
 })
 
-app.patch('/addreview/:bookId', (req, res) => {
+app.post('/addreview/:bookId', (req, res) => {
     addReview(req, res);
 })
+
 app.post('/getbooks', (req, res) => {
     getbooks(req, res);
 })
@@ -63,7 +64,7 @@ app.post('/book', (req, res) =>{
     loadbook(req, res);
 })
 
-app.patch('/modify/:reviewId', (req, res) => {
+app.post('/modify/:reviewId', (req, res) => {
     modifyReview(req, res);
 })
 
