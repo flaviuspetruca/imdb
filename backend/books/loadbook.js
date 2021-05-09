@@ -1,4 +1,4 @@
-const Book = require('./schemas/book');
+const Book = require('../schemas/book');
 const jwt = require('jsonwebtoken');
 
 const loadbook = (req, res) => {
