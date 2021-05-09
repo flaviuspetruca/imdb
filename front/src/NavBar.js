@@ -20,7 +20,7 @@ const NavBar = (logOut) => {
           backgroundColor       : '#2b2b2b',
         },
         overlay: {
-          backgroundColor         : 'rgba(92, 92, 92, 0.4)',
+          backgroundColor         : 'rgba(170, 170, 170, 0.4)',
       },
     
       };
@@ -45,7 +45,7 @@ const NavBar = (logOut) => {
         >
         <h5 className="text-center text-danger">Are you sure you want to log out?</h5>
         <button className="btn btn-danger deleteBtn mt-0 mr-2" onClick={()=> {logOut.logOut(); closeModal()}}>Logout</button>
-        <button onClick={closeModal} className="btn btn-warning cancelBtn">Cancel</button>
+        <button onClick={closeModal} className="btn btn-warning cancelLogout">Cancel</button>
     </Modal>
     <Navbar expand="lg" fixed="top" className="navbar">
     <Container>

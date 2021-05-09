@@ -103,8 +103,8 @@ form-control-create::placeholder{
 }
 
 
-.form-control:focus{
-  outline: none !important;
+.form-control-create:focus{
+  border-color: white !important;
 }
 
 .navbrand{
@@ -195,8 +195,15 @@ form-control-create::placeholder{
   color: black !important;
   background-color: rgb(241, 241, 241) !important;
 }
+.cancelLogout{
+  border-radius: 20px !important;
+}
 
 .cancelBtn{
+  height: 50px;
+  width: 100px;
+  font-size: 20px !important;
+  font-weight: 500 !important;
   border-radius: 20px !important;
 }
 
@@ -232,4 +239,39 @@ form-control-create::placeholder{
   position:absolute;
   bottom:0;
   left:0;
+}
+
+.reviewCreate{
+  height: 50px;
+  width: 150px;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  color: white !important;
+  background-color: rgb(11, 62, 155) !important;
+  border-radius: 20px !important;
+}
+
+.reviewCreate:hover{
+  background-color: rgb(26, 94, 230) !important;
+}
+
+.ReactModal__Body--open {
+  overflow-y: hidden;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transform: translateX(-50%, -50%);
+  transition: all 250ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transform: translateX(-50%, -50%);
 }
