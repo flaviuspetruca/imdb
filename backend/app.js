@@ -8,6 +8,11 @@ const confirm = require('./auth/confirm');
 const forgot = require('./auth/forgot');
 const reset = require('./auth/reset');
 const populate = require('./populate/populate');
+const getByCategory = require('./books/getByCategory');
+const addReview = require('./books/addReview');
+const getbooks = require('./books/getbooks');
+const loadbook = require('./books/loadbook');
+const modifyReview = require('./books/modifyReview');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -41,6 +46,26 @@ app.post('/resetpass', (req, res) => {
 //Temporary endpoint to populate database
 app.post('/populate', (req, res) => {
     populate(req, res);
+})
+
+app.post('/categories', (req, res) => {
+    getByCategory(req, res);
+})
+
+app.post('/addreview/:bookId', (req, res) => {
+    addReview(req, res);
+})
+
+app.post('/getbooks', (req, res) => {
+    getbooks(req, res);
+})
+
+app.post('/book', (req, res) =>{
+    loadbook(req, res);
+})
+
+app.post('/modify/:reviewId', (req, res) => {
+    modifyReview(req, res);
 })
 
 

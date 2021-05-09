@@ -16,7 +16,7 @@ const Register = () => {
     
     const submitForm = async() => {
         let ok = true;
-        if(username === ''){
+        if(username === '' || username.indexOf(' ') >= 0){
             setUserInput({borderColor: "red"});
             ok = false;
         }
@@ -26,7 +26,7 @@ const Register = () => {
             ok = false;
         }
 
-        if(password !== repassword || password.length < 6){
+        if(password !== repassword || password.length < 6 || password.indexOf(' ') >= 0){
             setPasswordInput({borderColor: "red"});
             ok = false;
         }

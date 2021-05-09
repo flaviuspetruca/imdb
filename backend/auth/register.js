@@ -12,11 +12,11 @@ const register = (req, res) => {
     const password = bcrypt.hashSync(req.body.password, salt);
     User.findOne({username}, (err, user) => {
         if(!user){
-            if(username.length < 6){
+            if(username.length < 6 || username.indexOf(' ') >= 0){
                 res.status(400).send("Username is too short");
             }
             else
-                if(password.length < 6){
+                if(password.length < 6 || password.indexOf(' ') >= 0){
                     res.status(406).send("Password too short");
                 }
             else{
@@ -46,7 +46,7 @@ const register = (req, res) => {
                                             sendEmail({
                                                 emailTo,
                                                 subject: "Confirm email for IBDB",
-                                                html: `<a href=${link}>Click here</a>`
+                                                html: `<a href=${link}>Click here to confirm you email.</a>`
                                             })
                                             res.status(200).send("email sent");
                                         }).catch((err) => res.status(400).send(err))

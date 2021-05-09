@@ -18,7 +18,7 @@ const bookSchema = new Schema({
             username: String,
             stars: Number,
             title: String,
-            descirption: { type: String, default: '' },
+            description: { type: String, default: '' },
             publishedAt: Date
         }
     ],
