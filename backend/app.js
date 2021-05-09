@@ -8,6 +8,8 @@ const confirm = require('./auth/confirm');
 const forgot = require('./auth/forgot');
 const reset = require('./auth/reset');
 const populate = require('./populate/populate');
+const getByCategory = require('./books/getByCategory');
+const addReview = require('./books/addReview');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -43,5 +45,12 @@ app.post('/populate', (req, res) => {
     populate(req, res);
 })
 
+app.get('/categories', (req, res) => {
+    getByCategory(req, res);
+})
+
+app.post('/addreview/:bookId', (req, res) => {
+    addReview(req, res);
+})
 
 app.listen(3000);
