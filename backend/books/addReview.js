@@ -9,6 +9,13 @@ const addReview = (req, res) => {
 
         Book.findOne({ "_id": id }, (err, book) => {
             if (book) {
+                // Check if user already created a review
+                for (review of book.reviews)
+                {
+                    if (review.username == req.body.username)
+                        return res.status(403).send("Already created a review");
+                }
+
                 console.log(book);
                 const averageRating = (book.averageRating * book.reviewsCount + req.body.stars) / (book.reviewsCount + 1);
                 console.log(averageRating);
