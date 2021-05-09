@@ -17,6 +17,7 @@ const BookInfo = () => {
         setRating(newRating);
     };
 
+    const [added, setAdded] = useState('');
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -54,6 +55,9 @@ const BookInfo = () => {
       
       function closeModal(){
           setIsOpen(false);
+          setTitleInput({borderColor: "#ced4da !important"});
+          setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
+          setAdded('');
       }
 
     const loadbook = async() => {
@@ -77,12 +81,16 @@ const BookInfo = () => {
     const sendReview = async() => {
         if(rating === 0){
             setRatingInput(false);
+            setAdded(false);
+            return;
         }
         if(title === '' || title.indexOf(' ') >= 0){
-            setTitleInput({borderColor: "red"})
+            setTitleInput({borderColor: "red !important"})
+            setAdded(false);
+            return;
         }
 
-        const data = {token}
+        const data = {token, title, stars: rating, description};
         const req = await fetch(`http://localhost:3000/addreview/${book._id}`,{
             method: 'POST',
             headers: {
@@ -90,6 +98,20 @@ const BookInfo = () => {
             },
             body: JSON.stringify(data)
         })
+
+        if(req.status === 201){
+            setAdded(true);
+            setTimeout(() => 
+            {setAdded(''); closeModal()}, 1000);
+        }
+        else
+            if(req.status === 403){
+                setAdded('ALREADY');
+            }
+        else{
+            setAdded(false);
+        }
+
     }
 
     const handleSubmit = (event) => {
@@ -99,7 +121,7 @@ const BookInfo = () => {
 
     useEffect(() => {
         loadbook();
-    }, [])
+    }, [added])
 
     if(book === '')
         return(
@@ -126,11 +148,13 @@ const BookInfo = () => {
               <div className="form-group">
                 <label className="create-label">Title</label>
                 <input 
-                    id="long"
+                    id="title"
                     type="text" 
                     className="form-control form-control-create" 
                     style={titleInput} 
                     onChange={e => {
+                                    setAdded('');
+                                    setTitleInput({borderColor: "#ced4da !important"});
                                     setTitle(e.target.value);
                                   }
                               }
@@ -139,12 +163,13 @@ const BookInfo = () => {
               <div className="form-group">
               <label className="create-label">Description</label>
                 <textarea
-                    id="short"
-                    rows="4" cols="50" 
+                    id="description"
+                    rows="6" cols="50" 
                     className="form-control form-control-create"
                     style={descriptionInput} 
                     onChange={e => {
-                                    
+                                    setAdded('');
+                                    setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
                                     setDescription(e.target.value);
                                   }
                               }
@@ -158,6 +183,18 @@ const BookInfo = () => {
                         activeColor="#ffd700"
                 />
             </div>
+            {
+                added === false?
+                <h5 className="text-center text-danger">Couldn't add review</h5>
+                :
+                added === true?
+                <h5 className="text-center text-success">Added review!</h5>
+                :
+                added === "ALREADY"?
+                <h5 className="text-center text-danger">You've already added a review!</h5>
+                :
+                <></>
+            }
             <div className="row justify-content-center">
               <button type="submit" className="btn btn-light mr-5 reviewCreate">Add review</button>
               <button onClick={closeModal} className="btn btn-warning cancelBtn">Cancel</button>

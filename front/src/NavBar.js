@@ -21,6 +21,7 @@ const NavBar = (logOut) => {
         },
         overlay: {
           backgroundColor         : 'rgba(170, 170, 170, 0.4)',
+          zIndex                  : '2000'
       },
     
       };

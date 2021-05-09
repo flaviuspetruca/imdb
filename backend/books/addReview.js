@@ -14,7 +14,7 @@ const addReview = (req, res) => {
                     // Check if user already created a review
                     for (review of book.reviews)
                     {
-                        if (review.username == req.body.username)
+                        if (review.username === decodedToken.username)
                             return res.status(403).send("Already created a review");
                     }
 
