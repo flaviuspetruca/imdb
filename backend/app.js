@@ -10,8 +10,9 @@ const reset = require('./auth/reset');
 const populate = require('./populate/populate');
 const getByCategory = require('./books/getByCategory');
 const addReview = require('./books/addReview');
-const getbooks = require('./getbooks');
-const loadbook = require('./loadbook');
+const getbooks = require('./books/getbooks');
+const loadbook = require('./books/loadbook');
+const modifyReview = require('./books/modifyReview');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -60,6 +61,10 @@ app.post('/getbooks', (req, res) => {
 
 app.post('/book', (req, res) =>{
     loadbook(req, res);
+})
+
+app.patch('/modify/:reviewId', (req, res) => {
+    modifyReview(req, res);
 })
 
 
