@@ -8,6 +8,8 @@ const confirm = require('./auth/confirm');
 const forgot = require('./auth/forgot');
 const reset = require('./auth/reset');
 const populate = require('./populate/populate');
+const getByCategory = require('./books/getByCategory');
+const addReview = require('./books/addReview');
 const getbooks = require('./getbooks');
 const loadbook = require('./loadbook');
 
@@ -45,6 +47,13 @@ app.post('/populate', (req, res) => {
     populate(req, res);
 })
 
+app.get('/categories', (req, res) => {
+    getByCategory(req, res);
+})
+
+app.patch('/addreview/:bookId', (req, res) => {
+    addReview(req, res);
+})
 app.post('/getbooks', (req, res) => {
     getbooks(req, res);
 })
