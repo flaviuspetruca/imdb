@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 const DashBoard = (logOut) => {
 
@@ -7,7 +8,7 @@ const DashBoard = (logOut) => {
     const data = {token};
 
     const getbooks = async() => {
-        const req = await fetch("http://localhost:3000/books", {
+        const req = await fetch("http://localhost:3000/getbooks", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,18 +28,29 @@ const DashBoard = (logOut) => {
         getbooks();
     }, []);
 
-    if(books.length > 0)
+    if(books.length === 0)
     return (
-        <div className="container dashboard-container">
-            <div className="row">
-            {
-                books.map(b => <div ket={b._id} className="col-lg-2 mb-5"><img className="book" src={b.thumbnail}/></div> )
-            }
+        <div className="container dashboard-container text-center">
+            <h1 className="text-light">Loading books...&#128214;</h1>
+            <div className="spinner-border spinner-border-xl text-light" role="status">
+                <span className="sr-only">Loading...</span>
             </div>
         </div>
     );
     else
-        return (<h1 className="text-success">WHTAS</h1>);
+        return (
+        <div className="container dashboard-container">
+            <div className="row">
+            {
+                books.map(b => <Link key={b._id} to={`/book/${b._id}`}><div  className="col-lg-2 mb-5">
+                    
+                    <img className="book" src={b.thumbnail}/>
+                    </div>
+                    </Link> )
+            }
+            </div>
+        </div>
+        );
 }
  
 export default DashBoard;

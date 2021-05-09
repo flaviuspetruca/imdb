@@ -9,6 +9,7 @@ const forgot = require('./auth/forgot');
 const reset = require('./auth/reset');
 const populate = require('./populate/populate');
 const getbooks = require('./getbooks');
+const loadbook = require('./loadbook');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -44,8 +45,12 @@ app.post('/populate', (req, res) => {
     populate(req, res);
 })
 
-app.post('/books', (req, res) => {
+app.post('/getbooks', (req, res) => {
     getbooks(req, res);
+})
+
+app.post('/book', (req, res) =>{
+    loadbook(req, res);
 })
 
 
