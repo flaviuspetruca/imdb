@@ -49,7 +49,7 @@ app.get('/categories', (req, res) => {
     getByCategory(req, res);
 })
 
-app.post('/addreview/:bookId', (req, res) => {
+app.patch('/addreview/:bookId', (req, res) => {
     addReview(req, res);
 })
 
