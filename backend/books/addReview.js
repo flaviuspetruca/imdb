@@ -2,43 +2,47 @@ const Book = require('../schemas/book');
 const jwt = require('jsonwebtoken');
 
 const addReview = (req, res) => {
-    // const token = JSON.parse(req.body.token);
+    const token = req.body.token;
     try {
-        // jwt.verify(token, process.env.TOKEN_SECRET);
+        jwt.verify(token, process.env.TOKEN_SECRET);
         const id = req.params.bookId;
 
         Book.findOne({ "_id": id }, (err, book) => {
-            // console.log(book);
-            const averageRating = (book.averageRating + req.body.stars) / (book.reviewsCount + 1);
-            console.log(averageRating);
-            console.log(typeof(req.body.description));
- 
-            Book.updateOne(
-                { "_id": id },
-                { 
-                    "$push": { 
-                    "reviews": {
-                        // TODO
-                        "username": req.body.username,
-                        "stars": req.body.stars,
-                        "title": req.body.title,
-                        "description": req.body.description,
-                        "publishedAt": Date.now() 
-                        }
+            if (book) {
+                console.log(book);
+                const averageRating = (book.averageRating * book.reviewsCount + req.body.stars) / (book.reviewsCount + 1);
+                console.log(averageRating);
+                console.log(typeof(req.body.description));
+
+                Book.updateOne(
+                    { "_id": id },
+                    { 
+                        "$push": { 
+                        "reviews": {
+                            // TODO
+                            "username": req.body.username,
+                            "stars": req.body.stars,
+                            "title": req.body.title,
+                            "description": req.body.description,
+                            "publishedAt": Date.now() 
+                            }
+                        },
+                        "$inc": {
+                            "reviewsCount": 1
+                        },
+                        "averageRating": averageRating
                     },
-                    "$inc": {
-                        "reviewsCount": 1
-                    },
-                    "averageRating": averageRating
-                },
-                (err, book) => {
-                    console.log(book);
-                }
-            );
+                    (err, book) => {
+                        res.status(201).send(book);
+                    }
+                );
+            } else {
+                res.status(404).send("Book " + id + " not found");
+            }
         }
     )
     } catch (err) {
-        console.log(err);
+        res.status.status(401).send("Invalid token");
     }
 };
 
