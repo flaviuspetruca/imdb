@@ -18,11 +18,6 @@ const addReview = (req, res) => {
                             return res.status(403).send("Already created a review");
                     }
 
-                    console.log(book);
-                    const averageRating = (book.averageRating * book.reviewsCount + req.body.stars) / (book.reviewsCount + 1);
-                    console.log(averageRating);
-                    console.log(typeof(req.body.description));
-
                     Book.updateOne(
                         { "_id": id },
                         { 
