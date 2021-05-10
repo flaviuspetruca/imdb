@@ -84,7 +84,7 @@ const BookInfo = () => {
             setAdded(false);
             return;
         }
-        if(title === '' || title.indexOf(' ') >= 0){
+        if(title === '' || !title.trim().length){
             setTitleInput({borderColor: "red !important"})
             setAdded(false);
             return;
