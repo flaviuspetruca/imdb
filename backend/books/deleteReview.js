@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const getAverageRating = require('./getAverageRating');
 
 const deleteReview = (req, res) => {
-    const token = req.body.token;
+    const token = JSON.parse(req.body.token);
     const reviewId = req.params.reviewId;
-    const bookId = req.body.book_id;
+    const bookId = req.body.bookId;
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
 

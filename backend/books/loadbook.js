@@ -12,11 +12,11 @@ const loadbook = (req, res) => {
         Book.findOne({_id: bookId}, (err, book) => {
             if(book){
                 if(role === 'admin'){
-                    res.status(201).send(book);
+                    res.status(201).send({book});
                 }
                 else
                     if(role === 'support'){
-                        res.status(202).send(book);
+                        res.status(202).send({book});
                     }
                     else{
                             res.status(200).send({book, username});

@@ -6,7 +6,7 @@ const modifyReview = (req, res) => {
     if (req.body.title != '' && req.body.stars > 0) {
         const token = JSON.parse(req.body.token); // For front-end
         // const token = req.body.token;
-        const bookId = req.body.book_id;
+        const bookId = req.body.bookId;
 
         try {
             const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
@@ -34,9 +34,9 @@ const modifyReview = (req, res) => {
                     await getAverageRating(bookId, function(err, avg) {
                         Book.updateOne({ "_id": bookId }, { "averageRating": avg }, (err, book) => {
                             if (book) {
-                                res.status(201).send(book);
+                                return res.status(201).send(book);
                             } else {
-                                res.status(404).send("Book " + bookId + " not found");
+                                return res.status(404).send("Book " + bookId + " not found");
                             }
                         })
                     });
@@ -44,7 +44,7 @@ const modifyReview = (req, res) => {
             );
 
             
-
+        /* res.status(201).send("OK"); */
         } catch(err) {
             res.status(401).send("Invalid token");
         }

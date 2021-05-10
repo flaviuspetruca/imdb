@@ -78,7 +78,6 @@ const BookInfo = () => {
         else
             if(req.status === 201){
                 const res = await req.json();
-                console.log(res);
                 setIsAdmin(true);
                 setBook(res.book);
             }
@@ -127,6 +126,11 @@ const BookInfo = () => {
             setAdded(false);
         }
 
+    }
+
+    const handleEdit = (value) => {  
+        console.log(value);
+        
     }
 
     const handleSubmit = (event) => {
@@ -225,6 +229,14 @@ const BookInfo = () => {
                             <div className="row">
                                 <div className="col-sm-12">
                                     <h2>{book.title}</h2>
+                                    <ReactStars
+                                        value={book.averageRating}
+                                        edit={false}
+                                        count={5}
+                                        size={30}
+                                        isHalf="true"
+                                        activeColor="#ffd700"
+                                    />
                                     <img src={book.thumbnail} className="bigThumbnail"></img>
                                 </div>
                             </div>
@@ -275,10 +287,14 @@ const BookInfo = () => {
                         <button className="btn btn-primary addReview" onClick={openModal}>Add review</button>
                         {
                             book.reviewsCount > 0 ?
-                            book.reviews.map(r => {
+                            book.reviews.slice(0).reverse().map(r => {
                                 if(isAdmin)
                                     return (<Review 
                                                 key={r._id} 
+                                                bookId={bookId}
+                                                token={token}
+                                                loadbook={loadbook}
+                                                handleEdit={handleEdit}
                                                 content={r} 
                                                 isAdmin={true}
                                                 isSupport={false}
@@ -288,6 +304,10 @@ const BookInfo = () => {
                                     if(isSupport)
                                         return (<Review 
                                                         key={r._id} 
+                                                        bookId={bookId}
+                                                        token={token}
+                                                        loadbook={loadbook}
+                                                        handleEdit={handleEdit}
                                                         content={r}
                                                         isAdmin={false}
                                                         isSupport={true}
@@ -296,7 +316,11 @@ const BookInfo = () => {
                                     else
                                         if(username)
                                             return (<Review 
-                                                            key={r._id} 
+                                                            key={r._id}
+                                                            bookId={bookId} 
+                                                            token={token}
+                                                            loadbook={loadbook}
+                                                            handleEdit={handleEdit}
                                                             content={r}
                                                             isAdmin={false}
                                                             isSupport={false}
