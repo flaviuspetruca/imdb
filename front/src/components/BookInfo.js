@@ -9,6 +9,9 @@ const BookInfo = () => {
 
     const [book, setBook] = useState('');
     const [date, setDate] = useState('');
+    const [username, setUsername] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isSupport, setIsSuport] = useState(false);
     const bookId = useParams();
     const token = localStorage.getItem('token');
     const data = {token, _id: bookId};
@@ -70,9 +73,23 @@ const BookInfo = () => {
         })
         if(req.status === 200){
             const res = await req.json();
-            setBook(res);
             console.log(res);
+            //setBook(res.book);
+            //setUsername(res.username);
         }
+        else
+            if(req.status === 201){
+                const res = await req.json();
+                console.log(res);
+                //setIsAdmin(true);
+                //setBook(res.book);
+            }
+            else
+                if(req.status === 202){
+                    const res = await req.json();
+                   // setIsSuport(true);
+                    //setBook(res.book);
+                }
         else{
             setBook(false);
         }
@@ -260,7 +277,12 @@ const BookInfo = () => {
                         <button className="btn btn-primary addReview" onClick={openModal}>Add review</button>
                         {
                             book.reviewsCount > 0 ?
-                            book.reviews.map(r => <Review key={r._id} content={r}></Review>)
+                            book.reviews.map(r => <Review   key={r._id} 
+                                                            content={r} 
+                                                            isAdmin={isAdmin}
+                                                            isSupport={isSupport}
+                                                            username={username}
+                            ></Review>)
                             :
                             <h6>There are no reviews. Be the first one?</h6>
                         }

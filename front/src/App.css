@@ -279,3 +279,12 @@ form-control-create::placeholder{
 #description{
   font-size: 15px !important;
 }
+
+.moreOptions{
+  width: 35px;
+  height: 35px;
+  position:absolute;
+  top:0;
+  right:0;
+}
+
