@@ -9,7 +9,7 @@ const deleteReview = (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
 
-        // Check user role
+        // Check user role`
         if (decodedToken.role == 'user') {
             Book.updateOne({ "reviews._id": reviewId }, { 
                 "$pull": { "reviews": { "_id": reviewId, "username": decodedToken.username } },
@@ -34,8 +34,8 @@ const deleteReview = (req, res) => {
             }, async(err, data) => {
                 if (data.nModified > 0) {
                     // Recalculate average rating of book
-                    await getAverageRating(bookId, function(err, avg) {
-                        Book.updateOne({ "_id": bookId }, { "averageRating": avg }, (err, book) => {
+                    await getAverageRating(bookId.id, function(err, avg) {
+                        Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
                             console.log('Updated book average rating');
                         });
                     });
