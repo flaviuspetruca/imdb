@@ -10,10 +10,15 @@ const Review = (props) => {
     const displayDate = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
     const displayTime = date.getHours() + ":" + date.getMinutes();
     const [isVerrifed, setIsVerrified] = useState(false);
-
+    
     const verify = () => {
-        if(props.isAdmin || props.isSupport || props.username)
-            setIsVerrified(true);
+        console.log(reviewInfo.username);
+        console.log(props.username);
+        if(props.isAdmin || props.isSupport || props.username === reviewInfo.username)
+            {setIsVerrified(true);
+                console.log("HERE:");
+            }
+
     }
 
     useEffect(() => {verify()} , []);
@@ -35,9 +40,8 @@ const Review = (props) => {
                     <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
                     </>
                     :
-                    <></>
+                    <Dropdown.Item href="#/action-3">Report</Dropdown.Item>
                 }
-                <Dropdown.Item href="#/action-3">Report</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
             <Card.Title>

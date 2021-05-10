@@ -8,7 +8,6 @@ import ReactStars from "react-rating-stars-component";
 const BookInfo = () => {
 
     const [book, setBook] = useState('');
-    const [date, setDate] = useState('');
     const [username, setUsername] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isSupport, setIsSuport] = useState(false);
@@ -73,22 +72,21 @@ const BookInfo = () => {
         })
         if(req.status === 200){
             const res = await req.json();
-            console.log(res);
-            //setBook(res.book);
-            //setUsername(res.username);
+            setBook(res.book);
+            setUsername(res.username);
         }
         else
             if(req.status === 201){
                 const res = await req.json();
                 console.log(res);
-                //setIsAdmin(true);
-                //setBook(res.book);
+                setIsAdmin(true);
+                setBook(res.book);
             }
             else
                 if(req.status === 202){
                     const res = await req.json();
-                   // setIsSuport(true);
-                    //setBook(res.book);
+                    setIsSuport(true);
+                    setBook(res.book);
                 }
         else{
             setBook(false);
@@ -277,12 +275,36 @@ const BookInfo = () => {
                         <button className="btn btn-primary addReview" onClick={openModal}>Add review</button>
                         {
                             book.reviewsCount > 0 ?
-                            book.reviews.map(r => <Review   key={r._id} 
-                                                            content={r} 
-                                                            isAdmin={isAdmin}
-                                                            isSupport={isSupport}
-                                                            username={username}
-                            ></Review>)
+                            book.reviews.map(r => {
+                                if(isAdmin)
+                                    return (<Review 
+                                                key={r._id} 
+                                                content={r} 
+                                                isAdmin={true}
+                                                isSupport={false}
+                                                username={false}
+                                            ></Review>)
+                                else
+                                    if(isSupport)
+                                        return (<Review 
+                                                        key={r._id} 
+                                                        content={r}
+                                                        isAdmin={false}
+                                                        isSupport={true}
+                                                        username={false}        
+                                                ></Review>)
+                                    else
+                                        if(username)
+                                            return (<Review 
+                                                            key={r._id} 
+                                                            content={r}
+                                                            isAdmin={false}
+                                                            isSupport={false}
+                                                            username={username}        
+                                                    ></Review>)
+                                        else
+                                            loadbook();
+                            })
                             :
                             <h6>There are no reviews. Be the first one?</h6>
                         }
