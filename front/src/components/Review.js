@@ -62,8 +62,8 @@ const Review = (props) => {
             return;
         }
         
+        console.log(rating);
         const data = {token, title, stars: rating, description, bookId};
-        console.log(data);
         const req = await fetch(`http://localhost:3000/modify/${reviewInfo._id}`,{
             method: 'POST',
             headers: {
@@ -72,7 +72,6 @@ const Review = (props) => {
             body: JSON.stringify(data)
         })
         if(req.status === 201){
-            console.log("HERE");
             props.handleEdit(true);
         }
         else{

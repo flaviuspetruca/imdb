@@ -129,8 +129,7 @@ const BookInfo = () => {
     }
 
     const handleEdit = (value) => {  
-        console.log(value);
-        
+        setAdded(value);        
     }
 
     const handleSubmit = (event) => {

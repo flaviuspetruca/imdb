@@ -39,6 +39,7 @@ const addReview = (req, res) => {
                                 await getAverageRating(id, function(err, avg) {
                                     Book.updateOne({ "_id": id }, { "averageRating": avg }, (err, book) => {
                                         if (book) {
+                                            console.log(book);
                                             res.status(201).send(book);
                                         } else {
                                             res.status(404).send("Book " + bookId + " not found");

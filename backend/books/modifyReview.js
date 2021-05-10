@@ -30,9 +30,8 @@ const modifyReview = (req, res) => {
                 async(err, review) => {
                     if (!review)
                         return res.status(404).send("Review " + reviewId + " not found");
-
-                    await getAverageRating(bookId, function(err, avg) {
-                        Book.updateOne({ "_id": bookId }, { "averageRating": avg }, (err, book) => {
+                    await getAverageRating(bookId.id, function(err, avg) {
+                        Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
                             if (book) {
                                 return res.status(201).send(book);
                             } else {
@@ -40,7 +39,7 @@ const modifyReview = (req, res) => {
                             }
                         })
                     });
-                }
+            }
             );
 
             
