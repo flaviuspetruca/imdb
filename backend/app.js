@@ -13,10 +13,11 @@ const addReview = require('./books/addReview');
 const getbooks = require('./books/getbooks');
 const loadbook = require('./books/loadbook');
 const modifyReview = require('./books/modifyReview');
+const deleteReview = require('./books/deleteReview');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
-mongoose.connect(process.env.AUTH, { useNewUrlParser: true }, ()=>{
+mongoose.connect(process.env.AUTH, { useNewUrlParser: true, useUnifiedTopology: true }, ()=>{
     console.log("Connected To USERDB!");
 })
 
@@ -68,5 +69,8 @@ app.post('/modify/:reviewId', (req, res) => {
     modifyReview(req, res);
 })
 
+app.delete('/deleteReview/:reviewId', (req, res) => {
+    deleteReview(req, res);
+})
 
 app.listen(3000);
