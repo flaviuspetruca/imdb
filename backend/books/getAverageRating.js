@@ -5,11 +5,13 @@ const getAverageRating = async(bookId, callback) => {
 
     Book.findOne({ "_id": bookId }, (err, book) => {
         if (book) {
-            for (review of book.reviews) {
-                avg += review.stars;
+            if (book.reviewsCount > 0) {
+                for (review of book.reviews) {
+                    avg += review.stars;
+                }
+                
+                avg = avg / book.reviewsCount;
             }
-            
-            avg = avg / book.reviewsCount;
             callback(null, avg);
         } else {
             return err;
