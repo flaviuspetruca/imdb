@@ -78,7 +78,8 @@ const NavBar = (logOut) => {
         {
           categories ?
             categories.map((category, index) => { if(index <= 2){ 
-              return(<Nav.Link className="text-center navlink" href="#">{category}</Nav.Link>)
+              const link = `/category/${category}`; 
+              return(<Nav.Link className="text-center navlink" href={link}>{category}</Nav.Link>)
             }
             else{  
               return;

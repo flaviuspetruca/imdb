@@ -57,7 +57,7 @@ function App() {
       <Switch>       
       <Route path="/" exact component={() => <DashBoard logOut={logOut}/>} />
       <Route path="/book/:id" component={BookInfo}/>
-      <Route path="/category/:category" component={Category}/>
+      <Route path="/category/:category" component={() => <Category logOut={logOut}/>}/>
       <Route component={NotFound} />
       </Switch>
       </Router>

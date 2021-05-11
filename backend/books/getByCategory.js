@@ -2,8 +2,7 @@ const Book = require('../schemas/book');
 const jwt = require('jsonwebtoken');
 
 const category = (req, res) => {
-    // const token = JSON.parse(req.body.token); // For front-end
-    const token = req.body.token;
+    const token = JSON.parse(req.body.token);
     try {
         jwt.verify(token, process.env.TOKEN_SECRET);
         let categories = req.query.category.split(',');
