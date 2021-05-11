@@ -15,6 +15,10 @@ const loadbook = require('./books/loadbook');
 const modifyReview = require('./books/modifyReview');
 const deleteReview = require('./books/deleteReview');
 const getCategories = require('./books/getCategories');
+const addUser = require('./user/addUser');
+const deleteUser = require('./user/deleteUser');
+const modifyUser = require('./user/modifyUser');
+const getUser = require('./user/getUser');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -76,6 +80,22 @@ app.delete('/deleteReview/:reviewId', (req, res) => {
 
 app.post('/getcategories', (req, res) => {
     getCategories(req, res);
+})
+
+app.post('/adduser', (req, res) => {
+    addUser(req, res);
+})
+
+app.delete('/deleteuser/:userId', (req, res) => {
+    deleteUser(req, res);
+})
+
+app.patch('/modifyuser/:userId', (req, res) => {
+    modifyUser(req, res);
+})
+
+app.post('/getuser/:userId', (req, res) => {
+    getUser(req, res);
 })
 
 app.listen(3000);
