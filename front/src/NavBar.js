@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {Navbar, Container, Nav} from 'react-bootstrap'
+import React, {useEffect, useState} from 'react';
+import {Navbar, Container, Nav,} from 'react-bootstrap'
 import Modal from 'react-modal'
 
 const NavBar = (logOut) => {
+
+    const token = localStorage.getItem('token');
 
     const customStyles = {
         content : {
@@ -25,6 +27,24 @@ const NavBar = (logOut) => {
       },
     
       };
+
+      const [categories, setCategories] = useState(false);
+
+      const getCategories = async() => {
+        const data = {token};
+        const req = await fetch("http://localhost:3000/getcategories", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        if(req.status === 200){
+          const res = await req.json();
+          setCategories(res);
+        }
+      }
+
       const [modalIsOpen,setIsOpen] = useState(false);
       
       function openModal() {
@@ -34,6 +54,8 @@ const NavBar = (logOut) => {
       function closeModal(){
           setIsOpen(false);
       }
+
+    useEffect(() => { getCategories() }, []);
 
     return ( 
     <>
@@ -52,9 +74,32 @@ const NavBar = (logOut) => {
     <Container>
       <Navbar.Brand className="navbrand" href="/">IBDB</Navbar.Brand>
       <Nav className="mr-auto ml-5">
-        <Nav.Link className="text-center navlink" href="#">Drama</Nav.Link>
-        <Nav.Link className="text-center navlink" href="#">Detective</Nav.Link>
-        <Nav.Link className="text-center navlink" href="#">Romance</Nav.Link>
+        <Nav.Link className="text-center navlink font-weight-normal" href="/">All</Nav.Link>
+        {
+          categories ?
+            categories.map((category, index) => { if(index <= 2){ 
+              return(<Nav.Link className="text-center navlink" href="#">{category}</Nav.Link>)
+            }
+            else{  
+              return;
+            }
+            })
+          :
+          <></>
+        }
+      <div className="dropdown">
+        <button className="dropbtn">Navbar</button>
+          <div className="dropdown-content">
+          {categories ?
+                  categories.map((category, index) => { if(index > 2){
+                    const link = `/category/${category}`; 
+                    return(<a className="text-center navlink" href={link}>{category}</a>)
+                  }})
+              :
+              <></>
+            }
+        </div>
+      </div>
       </Nav>
           <button className="btn btn-light logout" onClick={openModal}>Log Out</button>
     </Container>

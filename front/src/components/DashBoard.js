@@ -40,6 +40,7 @@ const DashBoard = (logOut) => {
     else
         return (
         <div className="container dashboard-container">
+            <h1 className="text-light mb-5">All books</h1>
             <div className="row">
             {
                 books.map(b => <Link key={b._id} to={`/book/${b._id}`}><div  className="col-lg-2 mb-5">

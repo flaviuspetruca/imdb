@@ -12,6 +12,7 @@ import ResetPassword from './components/auth/ResetPassword';
 import NotFound from './components/NotFound';
 import BookInfo from './components/BookInfo';
 import NavBar from './NavBar';
+import Category from './Category';
 
 
 function App() {
@@ -51,11 +52,12 @@ function App() {
   else
   return (
     <div className="App">
-      <NavBar logOut={logOut}/>
       <Router>
+      <NavBar logOut={logOut}/>
       <Switch>       
       <Route path="/" exact component={() => <DashBoard logOut={logOut}/>} />
       <Route path="/book/:id" component={BookInfo}/>
+      <Route path="/category/:category" component={Category}/>
       <Route component={NotFound} />
       </Switch>
       </Router>
