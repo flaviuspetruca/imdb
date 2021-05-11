@@ -17,11 +17,7 @@ const BookInfo = () => {
 
     const ratingChanged = (newRating) => {
         setRating(newRating);
-    };
-
-    /* const ratingChangedRender = (newRating) => {
-        setRenderRating(newRating);
-    }; */
+    }
 
     const [added, setAdded] = useState('');
     const [rating, setRating] = useState(0);
@@ -119,8 +115,7 @@ const BookInfo = () => {
 
         if(req.status === 201){
             setAdded(true);
-            setTimeout(() => 
-            {setAdded(''); closeModal()}, 1000);
+            document.location.reload();  
         }
         else
             if(req.status === 403){
