@@ -43,7 +43,7 @@ const Review = (props) => {
             body: JSON.stringify(data)
         })
         if(req.status === 204){
-            props.loadbook();
+            document.location.reload();
         }
         else{
             console.log("COULDNT DELETE");
