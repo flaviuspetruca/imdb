@@ -18,11 +18,6 @@ const addReview = (req, res) => {
                             return res.status(403).send("Already created a review");
                     }
 
-                    console.log(book);
-                    const averageRating = (book.averageRating * book.reviewsCount + req.body.stars) / (book.reviewsCount + 1);
-                    console.log(averageRating);
-                    console.log(typeof(req.body.description));
-
                     Book.updateOne(
                         { "_id": id },
                         { 
@@ -44,6 +39,7 @@ const addReview = (req, res) => {
                                 await getAverageRating(id, function(err, avg) {
                                     Book.updateOne({ "_id": id }, { "averageRating": avg }, (err, book) => {
                                         if (book) {
+                                            console.log(book);
                                             res.status(201).send(book);
                                         } else {
                                             res.status(404).send("Book " + bookId + " not found");

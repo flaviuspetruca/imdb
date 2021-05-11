@@ -8,14 +8,16 @@ import ReactStars from "react-rating-stars-component";
 const BookInfo = () => {
 
     const [book, setBook] = useState('');
-    const [date, setDate] = useState('');
+    const [username, setUsername] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isSupport, setIsSuport] = useState(false);
     const bookId = useParams();
     const token = localStorage.getItem('token');
     const data = {token, _id: bookId};
 
     const ratingChanged = (newRating) => {
         setRating(newRating);
-    };
+    }
 
     const [added, setAdded] = useState('');
     const [rating, setRating] = useState(0);
@@ -70,9 +72,21 @@ const BookInfo = () => {
         })
         if(req.status === 200){
             const res = await req.json();
-            setBook(res);
-            console.log(res);
+            setBook(res.book);
+            setUsername(res.username);
         }
+        else
+            if(req.status === 201){
+                const res = await req.json();
+                setIsAdmin(true);
+                setBook(res.book);
+            }
+            else
+                if(req.status === 202){
+                    const res = await req.json();
+                    setIsSuport(true);
+                    setBook(res.book);
+                }
         else{
             setBook(false);
         }
@@ -84,7 +98,7 @@ const BookInfo = () => {
             setAdded(false);
             return;
         }
-        if(title === '' || title.indexOf(' ') >= 0){
+        if(title === '' || !title.trim().length){
             setTitleInput({borderColor: "red !important"})
             setAdded(false);
             return;
@@ -101,8 +115,7 @@ const BookInfo = () => {
 
         if(req.status === 201){
             setAdded(true);
-            setTimeout(() => 
-            {setAdded(''); closeModal()}, 1000);
+            document.location.reload();  
         }
         else
             if(req.status === 403){
@@ -112,6 +125,11 @@ const BookInfo = () => {
             setAdded(false);
         }
 
+    }
+
+    const handleEdit = (value) => {  
+        setAdded(value);
+        document.location.reload();     
     }
 
     const handleSubmit = (event) => {
@@ -175,7 +193,7 @@ const BookInfo = () => {
                               }
                 />
               </div>
-              <div className="row justify-content-center mb-3">
+            <div className="row justify-content-center mb-3">
                 <ReactStars
                         count={5}
                         onChange={ratingChanged}
@@ -209,7 +227,17 @@ const BookInfo = () => {
                         <div className="col-sm-12">
                             <div className="row">
                                 <div className="col-sm-12">
+                                    
                                     <h2>{book.title}</h2>
+                                        <ReactStars
+                                            value={book.averageRating}
+                                            edit={false}
+                                            count={5}
+                                            size={30}
+                                            isHalf="true"
+                                            activeColor="#ffd700"
+                                        />
+                                    
                                     <img src={book.thumbnail} className="bigThumbnail"></img>
                                 </div>
                             </div>
@@ -260,7 +288,48 @@ const BookInfo = () => {
                         <button className="btn btn-primary addReview" onClick={openModal}>Add review</button>
                         {
                             book.reviewsCount > 0 ?
-                            book.reviews.map(r => <Review key={r._id} content={r}></Review>)
+                            book.reviews.slice(0).reverse().map(r => {
+                                if(isAdmin)
+                                    return (<Review 
+                                                key={r._id} 
+                                                bookId={bookId}
+                                                token={token}
+                                                loadbook={loadbook}
+                                                handleEdit={handleEdit}
+                                                content={r} 
+                                                isAdmin={true}
+                                                isSupport={false}
+                                                username={false}
+                                            ></Review>)
+                                else
+                                    if(isSupport)
+                                        return (<Review 
+                                                        key={r._id} 
+                                                        bookId={bookId}
+                                                        token={token}
+                                                        loadbook={loadbook}
+                                                        handleEdit={handleEdit}
+                                                        content={r}
+                                                        isAdmin={false}
+                                                        isSupport={true}
+                                                        username={false}        
+                                                ></Review>)
+                                    else
+                                        if(username)
+                                            return (<Review 
+                                                            key={r._id}
+                                                            bookId={bookId} 
+                                                            token={token}
+                                                            loadbook={loadbook}
+                                                            handleEdit={handleEdit}
+                                                            content={r}
+                                                            isAdmin={false}
+                                                            isSupport={false}
+                                                            username={username}        
+                                                    ></Review>)
+                                        else
+                                            loadbook();
+                            })
                             :
                             <h6>There are no reviews. Be the first one?</h6>
                         }
