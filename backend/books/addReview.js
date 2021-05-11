@@ -1,4 +1,5 @@
 const Book = require('../schemas/book');
+const User = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const getAverageRating = require('./getAverageRating');
 
@@ -40,7 +41,17 @@ const addReview = (req, res) => {
                                     Book.updateOne({ "_id": id }, { "averageRating": avg }, (err, book) => {
                                         if (book) {
                                             console.log(book);
-                                            res.status(201).send(book);
+                                            const username = decodedToken.username;
+                                            User.updateOne({ "username": username }, 
+                                            {
+                                                "$inc" : { "reviewCount": 1 }
+                                            },
+                                            (err, userUpdated) => {
+                                                if (userUpdated)
+                                                    res.status(201).send(userUpdated);
+                                                else
+                                                    res.status(404).send("User not found");
+                                            });
                                         } else {
                                             res.status(404).send("Book " + bookId + " not found");
                                         }
