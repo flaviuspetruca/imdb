@@ -19,6 +19,10 @@ const BookInfo = () => {
         setRating(newRating);
     };
 
+    /* const ratingChangedRender = (newRating) => {
+        setRenderRating(newRating);
+    }; */
+
     const [added, setAdded] = useState('');
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState('');
@@ -129,7 +133,8 @@ const BookInfo = () => {
     }
 
     const handleEdit = (value) => {  
-        setAdded(value);        
+        setAdded(value);
+        document.location.reload();     
     }
 
     const handleSubmit = (event) => {
@@ -193,7 +198,7 @@ const BookInfo = () => {
                               }
                 />
               </div>
-              <div className="row justify-content-center mb-3">
+            <div className="row justify-content-center mb-3">
                 <ReactStars
                         count={5}
                         onChange={ratingChanged}
@@ -227,15 +232,17 @@ const BookInfo = () => {
                         <div className="col-sm-12">
                             <div className="row">
                                 <div className="col-sm-12">
+                                    
                                     <h2>{book.title}</h2>
-                                    <ReactStars
-                                        value={book.averageRating}
-                                        edit={false}
-                                        count={5}
-                                        size={30}
-                                        isHalf="true"
-                                        activeColor="#ffd700"
-                                    />
+                                        <ReactStars
+                                            value={book.averageRating}
+                                            edit={false}
+                                            count={5}
+                                            size={30}
+                                            isHalf="true"
+                                            activeColor="#ffd700"
+                                        />
+                                    
                                     <img src={book.thumbnail} className="bigThumbnail"></img>
                                 </div>
                             </div>
