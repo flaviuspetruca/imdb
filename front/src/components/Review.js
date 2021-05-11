@@ -43,7 +43,7 @@ const Review = (props) => {
             body: JSON.stringify(data)
         })
         if(req.status === 204){
-            props.loadbook();
+            document.location.reload();
         }
         else{
             console.log("COULDNT DELETE");
@@ -62,7 +62,6 @@ const Review = (props) => {
             return;
         }
         
-        console.log(rating);
         const data = {token, title, stars: rating, description, bookId};
         const req = await fetch(`http://localhost:3000/modify/${reviewInfo._id}`,{
             method: 'POST',
@@ -73,6 +72,7 @@ const Review = (props) => {
         })
         if(req.status === 201){
             props.handleEdit(true);
+            closeModal2();
         }
         else{
             props.handleEdit(false);
@@ -167,7 +167,7 @@ const Review = (props) => {
                               }
                 />
               </div>
-              <div className="form-group">
+            <div className="form-group">
               <label className="create-label">Description</label>
                 <textarea
                     id="description"
@@ -182,8 +182,9 @@ const Review = (props) => {
                                   }
                               }
                 />
-              </div>
-              <div className="row justify-content-center mb-3">
+            </div>
+                <div className="row justify-content-center mb-3">
+            
                 <ReactStars
                         count={5}
                         onChange={ratingChanged}
@@ -191,7 +192,7 @@ const Review = (props) => {
                         size={55}
                         activeColor="#ffd700"
                 />
-            </div>
+                </div>
            
             <div className="row justify-content-center">
                 <button type="submit" className="btn btn-light mr-5 reviewCreate">Edit</button>
