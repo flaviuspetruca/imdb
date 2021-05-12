@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../schemas/user')
 
 const modifyUser = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token)
+    // const token = req.body.token
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
 
@@ -10,11 +11,13 @@ const modifyUser = (req, res) => {
 
         if (decodedToken.role === 'admin') {
             const userId = req.params.userId
+
+            // Check if there is another user with same username
             if (req.body.username) {
                 User.findOne({ "username": req.body.username }, (err, data) => {
-                    if (data)
-                        res.status(403).send("Username already in use")
-                    else {
+                    if (data) {
+                        return res.status(403).send('Username already in use')
+                    } else {
                         User.updateOne(
                             { "_id": userId },
                             {
@@ -35,7 +38,27 @@ const modifyUser = (req, res) => {
                         )
                     }
                 })
-            }
+                    
+            } else {
+                User.updateOne(
+                    { "_id": userId },
+                    {
+                        "$set": {
+                            // Only fields given in body will be sent
+                            ...(req.body.username) && { "username": req.body.username },
+                            ...(req.body.role) && { "role": req.body.role },
+                            ...(req.body.email) && { "email": req.body.email },
+                        }
+                    },
+                    (err, updateData) => {
+                        if (updateData.nModified > 0) {
+                            res.status(201).send(updateData)
+                        } else {
+                            res.status(404).send('User not found')
+                        }
+                    }
+                )
+            } 
         } else {
             res.status(403).send("Unauthorized: role 'user' cannot modify other users")
         }
