@@ -31,7 +31,7 @@ const Review = (props) => {
     };
 
     const deleteReview = async() => {
-        const data = {token, bookId};
+        const data = {token, bookId, "username": reviewInfo.username};
         const req = await fetch(`http://localhost:3000/deleteReview/${reviewInfo._id}`,{
             method: 'DELETE',
             headers: {
