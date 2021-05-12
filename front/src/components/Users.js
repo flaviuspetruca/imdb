@@ -35,8 +35,9 @@ const Users = () => {
             <div className="book-wrapper">
             <div className="book-inner">
                 <h1>Users</h1>
+                <button className="btn btn-light logout mb-2">Add user</button>
                 {users.map(u => 
-                        <Card>
+                        <Card key={u._id}>
                             <Card.Body>
                                 <Card.Title>{u.username}</Card.Title>
                                 <Link to={`/user/${u.username}`}>

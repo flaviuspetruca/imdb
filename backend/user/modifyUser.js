@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../schemas/user')
 
 const modifyUser = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token)
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
 
@@ -11,7 +11,7 @@ const modifyUser = (req, res) => {
         if (decodedToken.role === 'admin') {
             const userId = req.params.userId
             if (req.body.username) {
-                User.findOne({ "username": req.body.username }, (err, data) => {
+                User.findOne({ "_id": userId }, (err, data) => {
                     if (data)
                         res.status(403).send("Username already in use")
                     else {
