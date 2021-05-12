@@ -8,7 +8,7 @@ const modifyUser = (req, res) => {
 
         console.log(req.body)
 
-        if (decodedToken.role != "user") {
+        if (decodedToken.role === 'admin') {
             const userId = req.params.userId
             if (req.body.username) {
                 User.findOne({ "username": req.body.username }, (err, data) => {

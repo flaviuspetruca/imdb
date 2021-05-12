@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Navbar, Container, Nav,} from 'react-bootstrap'
-import Modal from 'react-modal'
+import {Navbar, Container, Nav} from 'react-bootstrap';
+import Modal from 'react-modal';
+import {Link} from 'react-router-dom';
 
 const NavBar = (logOut) => {
 
     const token = localStorage.getItem('token');
-
+    const [isAdmin, setIsAdmin] = useState('');
     const customStyles = {
         content : {
           color                 : 'white',
@@ -43,6 +44,12 @@ const NavBar = (logOut) => {
           const res = await req.json();
           setCategories(res);
         }
+        else
+          if(req.status === 201){
+            setIsAdmin(true);
+            const res = await req.json();
+            setCategories(res);
+          }
       }
 
       const [modalIsOpen,setIsOpen] = useState(false);
@@ -102,6 +109,12 @@ const NavBar = (logOut) => {
         </div>
       </div>
       </Nav>
+          {
+            isAdmin === true?
+              <Link to={'/users'}><button className="btn btn-light logout mr-2">Admin</button></Link>
+            :
+            <></>
+          }
           <button className="btn btn-light logout" onClick={openModal}>Log Out</button>
     </Container>
   </Navbar> 

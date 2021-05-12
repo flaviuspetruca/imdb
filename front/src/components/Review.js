@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Modal from 'react-modal';
 import {Dropdown} from 'react-bootstrap';
 import ReactStars from "react-rating-stars-component";
+import { Link } from 'react-router-dom';
 
 const Review = (props) => {
 
@@ -12,17 +13,13 @@ const Review = (props) => {
     const date = new Date(reviewInfo.publishedAt);
     const displayDate = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
     const displayTime = date.getHours() + ":" + date.getMinutes();
-    
-    const inputStyle = "border: '1px !important', borderColor: '#ced4da !important'";
-    const redinputStyle = "border: '1px !important', borderColor: 'red !important'";
 
+    const [isAdmin, setIsAdmin] = useState(props.isAdmin);
+    const [isEdited, setIsEdited] = useState('');
     const [isVerrifed, setIsVerrified] = useState(false);
     const [rating, setRating] = useState(reviewInfo.stars);
     const [title, setTitle] = useState(reviewInfo.title);
     const [description, setDescription] = useState(reviewInfo.description);
-    const [ratingInput, setRatingInput] = useState(true);
-    const [titleInput, setTitleInput] = useState({inputStyle});
-    const [descriptionInput, setDescriptionInput] = useState({inputStyle, resize: 'none'});
 
     const verify = () => {
         if(props.isAdmin || props.isSupport || props.username === reviewInfo.username)
@@ -52,12 +49,12 @@ const Review = (props) => {
 
     const editReview = async() =>{
         if(rating === 0){
-            setRatingInput(false);
+            setIsEdited(false);
             props.handleEdit(false);
             return;
         }
         if(title === '' || !title.trim().length){
-            setTitleInput({redinputStyle})
+            setIsEdited(false);
             props.handleEdit(false);
             return;
         }
@@ -158,10 +155,8 @@ const Review = (props) => {
                     type="text" 
                     className="form-control form-control-create"
                     value={title} 
-                    style={titleInput} 
                     onChange={e => {
-                                    //props.handleEdit('');
-                                    setTitleInput({borderColor: "#ced4da !important"});
+                                    setIsEdited('');
                                     setTitle(e.target.value);
                                   }
                               }
@@ -174,10 +169,8 @@ const Review = (props) => {
                     rows="6" cols="50" 
                     className="form-control form-control-create"
                     value={description}
-                    style={descriptionInput} 
                     onChange={e => {
-                                    //props.handleEdit('');
-                                    setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
+                                    setIsEdited('');
                                     setDescription(e.target.value);
                                   }
                               }
@@ -192,7 +185,19 @@ const Review = (props) => {
                         size={55}
                         activeColor="#ffd700"
                 />
+                
                 </div>
+
+                {
+                    isEdited === false?
+                    <h5 className="text-center text-danger">Plese set a title and a rating</h5>
+                    :
+                    isEdited === true?
+                    <h5 className="text-center text-success">Edited review!</h5>
+                    :
+                    <></>
+                    
+                }
            
             <div className="row justify-content-center">
                 <button type="submit" className="btn btn-light mr-5 reviewCreate">Edit</button>
@@ -232,9 +237,16 @@ const Review = (props) => {
                 size={24}
                 activeColor="#ffd700"
             />
-            <Card.Subtitle className="mt-2">
-                @{reviewInfo.username}
-            </Card.Subtitle>
+            {
+                isAdmin?
+                <Link to={`/user/${reviewInfo.username}`}><Card.Subtitle className="mt-2">
+                    @{reviewInfo.username}
+                </Card.Subtitle></Link>
+                :
+                <Card.Subtitle className="mt-2">
+                    @{reviewInfo.username}
+                </Card.Subtitle>
+            }
             <Card.Text>
                 {reviewInfo.description}
             </Card.Text>

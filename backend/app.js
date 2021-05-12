@@ -19,6 +19,7 @@ const addUser = require('./user/addUser');
 const deleteUser = require('./user/deleteUser');
 const modifyUser = require('./user/modifyUser');
 const getUser = require('./user/getUser');
+const getUsers = require('./user/getUsers');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -94,8 +95,12 @@ app.patch('/modifyuser/:userId', (req, res) => {
     modifyUser(req, res);
 })
 
-app.post('/getuser/:userId', (req, res) => {
+app.post('/getuser/:username', (req, res) => {
     getUser(req, res);
+})
+
+app.post('/getusers/', (req, res) => {
+    getUsers(req, res);
 })
 
 app.listen(3000);

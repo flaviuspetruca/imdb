@@ -129,7 +129,8 @@ const BookInfo = () => {
 
     const handleEdit = (value) => {  
         setAdded(value);
-        document.location.reload();     
+        if(value === true)
+            document.location.reload();     
     }
 
     const handleSubmit = (event) => {
@@ -144,11 +145,11 @@ const BookInfo = () => {
     if(book === '')
         return(
             <div className="container dashboard-container text-center">
-            <h1 className="text-light">Loading book...&#128214;</h1>
-            <div className="spinner-border spinner-border-xl text-light" role="status">
-                <span className="sr-only">Loading...</span>
+                <h1 className="text-light">Loading book...&#128214;</h1>
+                <div className="spinner-border spinner-border-xl text-light" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
-        </div>
         );
     else
         if(book !== false)

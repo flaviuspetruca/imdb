@@ -11,8 +11,10 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import NotFound from './components/NotFound';
 import BookInfo from './components/BookInfo';
-import NavBar from './NavBar';
-import Category from './Category';
+import NavBar from './components/NavBar';
+import Category from './components/Category';
+import Users from './components/Users';
+import User from './components/User';
 
 
 function App() {
@@ -58,6 +60,8 @@ function App() {
       <Route path="/" exact component={() => <DashBoard logOut={logOut}/>} />
       <Route path="/book/:id" component={BookInfo}/>
       <Route path="/category/:category" component={() => <Category logOut={logOut}/>}/>
+      <Route path="/users" component={Users}/>
+      <Route path="/user/:username" component={User}/>
       <Route component={NotFound} />
       </Switch>
       </Router>

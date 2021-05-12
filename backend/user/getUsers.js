@@ -1,16 +1,16 @@
 const User = require('../schemas/user')
 const jwt = require('jsonwebtoken')
 
-const getUser = (req, res) => {
+const getUsers = (req, res) => {
     const token = JSON.parse(req.body.token)
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if(decodedToken.role === "admin"){
-            User.findOne({ "username": req.params.username }, (err, data) => {
+            User.find({}, (err, data) => {
                 if (data) {
                     res.status(200).send(data)
                 } else {
-                    res.status(404).send('User not found')
+                    res.status(404).send('No users found');
                 }
             })
         } else{
@@ -22,4 +22,4 @@ const getUser = (req, res) => {
     }
 }
 
-module.exports = getUser
+module.exports = getUsers;

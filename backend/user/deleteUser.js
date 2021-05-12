@@ -1,11 +1,11 @@
 const User = require('../schemas/user')
 const jwt = require('jsonwebtoken')
 
-const addUser = (req, res) => {
+const deleteUser = (req, res) => {
     const token = JSON.parse(req.body.token)
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
-        if (decodedToken.role != "user") {
+        if (decodedToken.role === 'admin') {
             const userId = req.params.userId
             User.deleteOne({ "_id": userId }, (err, data) => {
                 if (data) {
@@ -15,7 +15,7 @@ const addUser = (req, res) => {
                 }
             })
         } else {
-            res.status(403).send("Unauthorized: role 'user' cannot delete other users");
+            res.status(403).send("Unauthorized role");
         }
     } catch(err) {
         console.log(err);
@@ -23,4 +23,4 @@ const addUser = (req, res) => {
     }
 }
 
-module.exports = addUser
+module.exports = deleteUser
