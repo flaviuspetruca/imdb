@@ -3,10 +3,11 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 const addUser = (req, res) => {
-    const token = JSON.parse(req.body.token);
+    // const token = JSON.parse(req.body.token);
+    const token = req.body.token
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
-        if (decodedToken.role != "user") {
+        if (decodedToken.role === "admin") {
             const salt = bcrypt.genSaltSync(10)
             const password = bcrypt.hashSync(req.body.password, salt)
 

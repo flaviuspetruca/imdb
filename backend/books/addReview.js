@@ -19,6 +19,7 @@ const addReview = (req, res) => {
                             return res.status(403).send("Already created a review");
                     }
 
+                    const curDate = Date.now()
                     Book.updateOne(
                         { "_id": id },
                         { 
@@ -28,7 +29,7 @@ const addReview = (req, res) => {
                                 "stars": req.body.stars,
                                 "title": req.body.title,
                                 "description": req.body.description,
-                                "publishedAt": Date.now() 
+                                "publishedAt": curDate
                                 }
                             },
                             "$inc": {
@@ -42,18 +43,32 @@ const addReview = (req, res) => {
                                         if (book) {
                                             console.log(book);
                                             const username = decodedToken.username;
-                                            User.updateOne({ "username": username }, 
-                                            {
-                                                "$inc" : { "reviewCount": 1 }
-                                            },
-                                            (err, userUpdated) => {
-                                                if (userUpdated)
-                                                    res.status(201).send(userUpdated);
-                                                else
-                                                    res.status(404).send("User not found");
-                                            });
+
+                                            Book.findOne({ "_id": id }, (err, book) => {
+                                                if (book) {
+                                                    let reviewId
+                                                    for (let review of book.reviews) {
+                                                        if (review.username == username)
+                                                            reviewId = review._id
+                                                    }
+
+                                                    User.updateOne({ "username": username }, 
+                                                    {
+                                                        "$inc" : { "reviewCount": 1 },
+                                                        "$push": { "reviews": { "id": reviewId } }
+                                                    },
+                                                    (err, userUpdated) => {
+                                                        if (userUpdated)
+                                                            res.status(201).send(userUpdated);
+                                                        else
+                                                            res.status(404).send("User not found");
+                                                    });
+                                                } else {
+                                                    res.status(404).send("Book " + id + " not found");
+                                                }
+                                            })
                                         } else {
-                                            res.status(404).send("Book " + bookId + " not found");
+                                            res.status(404).send("Book " + id + " not found");
                                         }
                                     })
                                 });
