@@ -20,6 +20,7 @@ const deleteUser = require('./user/deleteUser');
 const modifyUser = require('./user/modifyUser');
 const getUser = require('./user/getUser');
 const getUsers = require('./user/getUsers');
+const reviewsOnDate = require('./user/reviewsOnDate');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -101,6 +102,10 @@ app.post('/getuser/:username', (req, res) => {
 
 app.post('/getusers/', (req, res) => {
     getUsers(req, res);
+})
+
+app.post('/reviewsondate/:userId', (req, res) => {
+    reviewsOnDate(req, res);
 })
 
 app.listen(3000);
