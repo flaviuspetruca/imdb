@@ -47,7 +47,7 @@ const User = () => {
             setModified(false);
             return;
         }
-        const data = {token, role: newRole, username};
+        const data = {token, role: newRole};
         const req = await fetch(`http://localhost:3000/modifyuser/${user._id}`,{
             method: 'PATCH',
             headers: {
@@ -57,6 +57,9 @@ const User = () => {
         })
         if(req.status === 201){
             setModified(true);
+            setTimeout(() => {
+                closeModal2();
+            }, 1000);
         }else{
             setModified(false);
         }
@@ -164,7 +167,7 @@ const User = () => {
          }]
      }
 
-    useEffect(() => {getuser()}, [deleted]);
+    useEffect(() => {getuser()}, [deleted, modified]);
 
     return ( 
         <>
