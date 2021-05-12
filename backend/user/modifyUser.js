@@ -3,7 +3,6 @@ const User = require('../schemas/user')
 
 const modifyUser = (req, res) => {
     const token = JSON.parse(req.body.token)
-    // const token = req.body.token
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
 
@@ -14,10 +13,10 @@ const modifyUser = (req, res) => {
 
             // Check if there is another user with same username
             if (req.body.username) {
-                User.findOne({ "username": req.body.username }, (err, data) => {
-                    if (data) {
-                        return res.status(403).send('Username already in use')
-                    } else {
+                User.findOne({ "_id": userId }, (err, data) => {
+                    if (data)
+                        res.status(403).send("Username already in use")
+                    else {
                         User.updateOne(
                             { "_id": userId },
                             {

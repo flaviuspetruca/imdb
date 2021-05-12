@@ -1,8 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import {Navbar, Container, Nav} from 'react-bootstrap'
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Confirm from './components/auth/Confirm';

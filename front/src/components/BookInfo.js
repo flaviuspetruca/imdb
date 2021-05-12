@@ -23,9 +23,6 @@ const BookInfo = () => {
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [ratingInput, setRatingInput] = useState(true);
-    const [titleInput, setTitleInput] = useState({borderColor: "#ced4da"});
-    const [descriptionInput, setDescriptionInput] = useState({borderColor: "#ced4da", resize: 'none'});
 
     const customStyles = {
         content : {
@@ -57,8 +54,6 @@ const BookInfo = () => {
       
       function closeModal(){
           setIsOpen(false);
-          setTitleInput({borderColor: "#ced4da !important"});
-          setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
           setAdded('');
       }
 
@@ -94,12 +89,10 @@ const BookInfo = () => {
 
     const sendReview = async() => {
         if(rating === 0){
-            setRatingInput(false);
             setAdded(false);
             return;
         }
         if(title === '' || !title.trim().length){
-            setTitleInput({borderColor: "red !important"})
             setAdded(false);
             return;
         }
@@ -170,10 +163,8 @@ const BookInfo = () => {
                     id="title"
                     type="text" 
                     className="form-control form-control-create" 
-                    style={titleInput} 
                     onChange={e => {
                                     setAdded('');
-                                    setTitleInput({borderColor: "#ced4da !important"});
                                     setTitle(e.target.value);
                                   }
                               }
@@ -184,11 +175,9 @@ const BookInfo = () => {
                 <textarea
                     id="description"
                     rows="6" cols="50" 
-                    className="form-control form-control-create"
-                    style={descriptionInput} 
+                    className="form-control form-control-create" 
                     onChange={e => {
                                     setAdded('');
-                                    setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
                                     setDescription(e.target.value);
                                   }
                               }
