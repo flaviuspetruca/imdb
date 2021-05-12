@@ -17,6 +17,8 @@ const User = () => {
     const [user, setUser] = useState('');
     const [newRole, setNewRole] = useState('Change Role');
     const [modified, setModified] = useState('');
+    const [option, setOption] = useState(false);
+    const [dates, setDates] = useState('');
     const roles = ['admin', 'support', 'user'];
 
 
@@ -126,15 +128,34 @@ const User = () => {
           setNewRole("Change Role");
       }
 
-      function formatDate(date){
+      const createChart = async() => {
+        const data = {token};
+        const req = await fetch(`http://localhost:3000/reviewsondate/${user._id}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        if(req.status === 200){
+            const res = await req.json();
+            setDates(res);
+        }
+        else{
+            setOption(false);
+            return;
+        }
+        console.log(dates);
 
-        var dd = date.getDate();
-        var mm = date.getMonth()+1;
-        if(dd<10) {dd='0'+dd}
-        if(mm<10) {mm='0'+mm}
-        date = mm+'/'+dd;
-        return date
-     }
+        function formatDate(date){
+
+            var dd = date.getDate();
+            var mm = date.getMonth()+1;
+            if(dd<10) {dd='0'+dd}
+            if(mm<10) {mm='0'+mm}
+            date = mm+'/'+dd;
+            return date
+        }
 
         function Last7Days () {
             var result = [];
@@ -148,26 +169,25 @@ const User = () => {
 
     const dayArray = Last7Days();
     
-
-      const options = {
+      let options = {
         title: {
           text: "7 day review activity"
         },
         data: [{				
                   type: "column",
-                  dataPoints: [
-                      { label: dayArray[0],  y: 10  },
-                      { label: dayArray[1], y: 15  },
-                      { label: dayArray[2], y: 25  },
-                      { label: dayArray[3],  y: 30  },
-                      { label: dayArray[4],  y: 28  },
-                      { label: dayArray[5],  y: 28  },
-                      { label: dayArray[6],  y: 28  }
-                  ]
+                  dataPoints: [{label: "data", y: 24}]
          }]
-     }
+        }
+        options.data.dataPoints = dayArray.map(d => 
+            {   if(dates.length > 0)
+                dates.map(date => {
+                if(date.date.substring(0, date.date.length - 5) === d)
+                    console.log("here");
+            })
+        })
+    }
 
-    useEffect(() => {getuser()}, [deleted, modified]);
+    useEffect(() => {getuser(); createChart()}, [deleted, modified]);
 
     return ( 
         <>
@@ -232,7 +252,12 @@ const User = () => {
                                 <button className="btn btn-light modifyBtn" onClick={openModal2}>Modify user's permitions</button>
                             </div>
                             <div className="col-sm-6">
-                            <CanvasJSChart options = {options}/>
+                            {
+                                !option ?
+                                <h6 className="text-center">Chart not available with no data</h6>
+                                :
+                                <CanvasJSChart options = {option}/>
+                            }
                             </div>
                         </div>
                     </div>

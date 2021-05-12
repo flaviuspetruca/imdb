@@ -96,7 +96,7 @@ const NavBar = (logOut) => {
           <></>
         }
       <div className="dropdown">
-        <button className="dropbtn">Navbar</button>
+        <button className="dropbtn">More</button>
           <div className="dropdown-content">
           {categories ?
                   categories.map((category, index) => { if(index > 2){

@@ -3,7 +3,7 @@ const Book = require('../schemas/book')
 const jwt = require('jsonwebtoken')
 
 const reviewsOnDate = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token);
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         const userId = req.params.userId
@@ -43,10 +43,7 @@ const reviewsOnDate = (req, res) => {
                             resultReviews[index].reviewsCount = counter;
                         }
 
-
-                        console.log(resultReviews)
-
-                        res.status(200).send()
+                        res.status(200).send(resultReviews);
                     })
 
                 }

@@ -230,6 +230,16 @@ const Review = (props) => {
             <Card.Title>
                 {reviewInfo.title}
             </Card.Title>
+            {
+                isAdmin?
+                <Link to={`/user/${reviewInfo.username}`}><Card.Subtitle>
+                    @{reviewInfo.username}
+                </Card.Subtitle></Link>
+                :
+                <Card.Subtitle className="mb-3">
+                    @{reviewInfo.username}
+                </Card.Subtitle>
+            }
             <ReactStars
                 value={reviewInfo.stars}
                 edit={false}
@@ -237,17 +247,8 @@ const Review = (props) => {
                 size={24}
                 activeColor="#ffd700"
             />
-            {
-                isAdmin?
-                <Link to={`/user/${reviewInfo.username}`}><Card.Subtitle className="mt-2">
-                    @{reviewInfo.username}
-                </Card.Subtitle></Link>
-                :
-                <Card.Subtitle className="mt-2">
-                    @{reviewInfo.username}
-                </Card.Subtitle>
-            }
-            <Card.Text>
+            <Card.Subtitle className="mt-2">Description</Card.Subtitle>
+            <Card.Text className="mt-2">
                 {reviewInfo.description}
             </Card.Text>
             <Card.Text>Published on {displayDate} at {displayTime} </Card.Text>
