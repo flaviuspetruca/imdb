@@ -3,7 +3,7 @@ const Book = require('../schemas/book')
 const jwt = require('jsonwebtoken')
 
 const reviewsOnDate = (req, res) => {
-    const token = JSON.parse(req.body.token);
+    const token = JSON.parse(req.body.token)
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         const userId = req.params.userId
@@ -20,19 +20,19 @@ const reviewsOnDate = (req, res) => {
                             let dontPush = 0
 
                             for (let review of resultReviews) {
-                                if (review.date === date)
+                                if (review.label === date)
                                     dontPush = 1
                             }
 
                             if (!dontPush)
                                 resultReviews.push({ 
-                                    date: date
+                                    label: date
                                 })
                         }
 
                         for (let index in resultReviews) {
                             let counter = 0
-                            let date = resultReviews[index].date
+                            let date = resultReviews[index].label
 
                             for (let book of data) {
                                 let reviewDate = book.reviews[0].publishedAt.toLocaleDateString()
@@ -40,10 +40,10 @@ const reviewsOnDate = (req, res) => {
                                     counter++
                             }
 
-                            resultReviews[index].reviewsCount = counter;
+                            resultReviews[index].y = counter;
                         }
 
-                        res.status(200).send(resultReviews);
+                        res.status(200).send(resultReviews)
                     })
 
                 }
