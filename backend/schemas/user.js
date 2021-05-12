@@ -7,7 +7,8 @@ const userSchema = new Schema({
     email: String,
     role: {type: String, default: "user"},
     password: String,
-    reviewCount: {type: Number, default: 0}
+    reviewCount: {type: Number, default: 0},
+    reviews: [] // Array of review ids
 })
 
 const User = mongoose.model('user', userSchema);
