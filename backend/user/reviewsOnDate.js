@@ -43,7 +43,50 @@ const reviewsOnDate = (req, res) => {
                             resultReviews[index].y = counter;
                         }
 
-                        res.status(200).send(resultReviews)
+                        let dates = resultReviews;
+
+                        const formatDate = (date) => {
+
+                            var dd = date.getDate();
+                            var mm = date.getMonth()+1;
+                            if(dd<10) {dd='0'+dd}
+                            if(mm<10) {mm='0'+mm}
+                            date = mm+'/'+dd;
+                            return date
+                        }
+                
+                        const Last7Days = () => {
+                            var result = [];
+                            for (var i=0; i<7; i++) {
+                                var d = new Date();
+                                let ok = 0;
+                                d.setDate(d.getDate() - i);
+                                dates.map(date => {
+                                    let splitdate = date.label.split('/')
+                                    
+                                    if(splitdate[0].length == 1) {
+                                        date.label = "0" + splitdate[0]+ "/" + splitdate[1];
+                                    }
+                                    splitdate = date.label.split('/')
+                                    if(splitdate[1].length == 1) {
+                                        date.label = splitdate[0] + "/0" + splitdate[1];
+                                    }
+                                    if(formatDate(d) === date.label)
+                                        {
+                                            result.push({label: date.label, y: date.y})
+                                            ok = 1;
+                                        }   
+                                }               
+                                )
+                                if(ok === 0){
+                                    result.push({label: formatDate(d), y: 0})
+                                }
+                                
+                            }
+                            return result.reverse();
+                        }
+
+                        res.status(200).send(Last7Days());
                     })
 
                 }

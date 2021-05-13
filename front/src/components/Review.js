@@ -14,17 +14,11 @@ const Review = (props) => {
     const displayDate = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
     const displayTime = date.getHours() + ":" + date.getMinutes();
 
-    const [isAdmin, setIsAdmin] = useState(props.isAdmin);
     const [isEdited, setIsEdited] = useState('');
     const [isVerrifed, setIsVerrified] = useState(false);
     const [rating, setRating] = useState(reviewInfo.stars);
     const [title, setTitle] = useState(reviewInfo.title);
     const [description, setDescription] = useState(reviewInfo.description);
-
-    const verify = () => {
-        if(props.isAdmin || props.isSupport || props.username === reviewInfo.username)
-            setIsVerrified(true);
-    }
 
     const ratingChanged = (newRating) => {
         setRating(newRating);
@@ -124,7 +118,12 @@ const Review = (props) => {
         editReview();
     }
 
-    useEffect(() => {verify()} , []);
+    useEffect(() => {
+        const verify = () => {
+            if(props.isAdmin || props.isSupport || props.username === reviewInfo.username)
+                setIsVerrified(true);
+        }
+        verify()} , [props.isAdmin, props.isSupport, props.username, reviewInfo.username]);
 
     return (
     <>
@@ -231,7 +230,7 @@ const Review = (props) => {
                 {reviewInfo.title}
             </Card.Title>
             {
-                isAdmin?
+                props.isAdmin?
                 <Link to={`/user/${reviewInfo.username}`}><Card.Subtitle>
                     @{reviewInfo.username}
                 </Card.Subtitle></Link>

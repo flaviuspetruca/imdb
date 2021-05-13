@@ -31,6 +31,17 @@ const NavBar = (logOut) => {
 
       const [categories, setCategories] = useState(false);
 
+      const [modalIsOpen,setIsOpen] = useState(false);
+      
+      function openModal() {
+          setIsOpen(true);
+      }
+      
+      function closeModal(){
+          setIsOpen(false);
+      }
+
+    useEffect(() => {
       const getCategories = async() => {
         const data = {token};
         const req = await fetch("http://localhost:3000/getcategories", {
@@ -51,18 +62,7 @@ const NavBar = (logOut) => {
             setCategories(res);
           }
       }
-
-      const [modalIsOpen,setIsOpen] = useState(false);
-      
-      function openModal() {
-          setIsOpen(true);
-      }
-      
-      function closeModal(){
-          setIsOpen(false);
-      }
-
-    useEffect(() => { getCategories() }, []);
+      getCategories() }, [token]);
 
     return ( 
     <>
@@ -111,7 +111,7 @@ const NavBar = (logOut) => {
       </Nav>
           {
             isAdmin === true?
-              <Link to={'/users'}><button className="btn btn-light logout mr-2">Admin</button></Link>
+              <Link to={'/users'}><button className="btn btn-secondary logout mr-2">Admin</button></Link>
             :
             <></>
           }

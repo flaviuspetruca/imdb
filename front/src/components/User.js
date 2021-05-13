@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import NotFound from './NotFound';
-import CanvasJSReact from '../canvasjs.react';
 import Modal from 'react-modal';
 import {useParams, useHistory} from 'react-router-dom';
 import { DropdownButton } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import UserChart from './UserChart';
 
 const User = () => {
 
@@ -17,32 +17,7 @@ const User = () => {
     const [user, setUser] = useState('');
     const [newRole, setNewRole] = useState('Change Role');
     const [modified, setModified] = useState('');
-    const [option, setOption] = useState(false);
-    const [dates, setDates] = useState('');
     const roles = ['admin', 'support', 'user'];
-
-
-    var CanvasJS = CanvasJSReact.CanvasJS;
-    var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-    const getuser = async() => {
-        const data = {token};
-        const req = await fetch(`http://localhost:3000/getuser/${username}`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        if(req.status === 200){
-            setIsAdmin(true);
-            const res = await req.json();
-            setUser(res);
-        }
-        else{
-            setIsAdmin(false);
-        }
-    }
 
     const modifyuser = async() => {
         if(newRole === "Change Role"){
@@ -85,7 +60,28 @@ const User = () => {
         }
     }
 
-     const customStyles = {
+     const customStyles1 = {
+        content : {
+          color                 : 'white',
+          border                : 'none',
+          width                 : '400px',
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)',
+          overflow              : 'hidden',
+          borderRadius          : '15px',
+          backgroundColor       : '#2b2b2b',
+        },
+        overlay: {
+          backgroundColor         : 'rgba(170, 170, 170, 0.4)',
+          zIndex                  : '2000'
+      },
+    
+      };
+      const customStyles2 = {
         content : {
           color                 : 'white',
           border                : 'none',
@@ -108,6 +104,8 @@ const User = () => {
     
       };
 
+      
+
      const [modalIsOpen1,setIsOpen1] = useState(false);
      const [modalIsOpen2,setIsOpen2] = useState(false);
       
@@ -128,73 +126,33 @@ const User = () => {
           setNewRole("Change Role");
       }
 
-      const createChart = async() => {
-        const data = {token};
-        const req = await fetch(`http://localhost:3000/reviewsondate/${user._id}`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        if(req.status === 200){
-            const res = await req.json();
-            setDates(res);
-        }
-        else{
-            setOption(false);
-            return;
-        }
-        console.log(dates);
-
-        function formatDate(date){
-
-            var dd = date.getDate();
-            var mm = date.getMonth()+1;
-            if(dd<10) {dd='0'+dd}
-            if(mm<10) {mm='0'+mm}
-            date = mm+'/'+dd;
-            return date
-        }
-
-        function Last7Days () {
-            var result = [];
-            for (var i=0; i<7; i++) {
-                var d = new Date();
-                d.setDate(d.getDate() - i);
-                result.push( formatDate(d) )
-            }
-            return(result);
-        }
-
-    const dayArray = Last7Days();
-    
-      let options = {
-        title: {
-          text: "7 day review activity"
-        },
-        data: [{				
-                  type: "column",
-                  dataPoints: [{label: "data", y: 24}]
-         }]
-        }
-        options.data.dataPoints = dayArray.map(d => 
-            {   if(dates.length > 0)
-                dates.map(date => {
-                if(date.date.substring(0, date.date.length - 5) === d)
-                    console.log("here");
+    useEffect(() => {
+        const getuser = async() => {
+            const data = {token};
+            const req = await fetch(`http://localhost:3000/getuser/${username}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
-        })
-    }
-
-    useEffect(() => {getuser(); createChart()}, [deleted, modified]);
+            if(req.status === 200){
+                setIsAdmin(true);
+                const res = await req.json();
+                setUser(res);
+            }
+            else{
+                setIsAdmin(false);
+            }
+        }
+        getuser()}, [deleted, modified, token, username]);
 
     return ( 
         <>
         <Modal 
             isOpen={modalIsOpen1}
             onRequestClose={closeModal1}
-            style={customStyles}
+            style={customStyles1}
             contentLabel="Example Modal"
             ariaHideApp={false}
             >
@@ -205,7 +163,7 @@ const User = () => {
         <Modal 
             isOpen={modalIsOpen2}
             onRequestClose={closeModal2}
-            style={customStyles}
+            style={customStyles2}
             contentLabel="Example Modal"
             ariaHideApp={false}
             >
@@ -219,6 +177,8 @@ const User = () => {
                             >
                             {r}
                             </DropdownItem>)
+                        else
+                            return;
                         })
                     }
                     </DropdownButton>
@@ -249,15 +209,10 @@ const User = () => {
                                 <h6>Email: {user.email}</h6>
                                 <h6>Role: {user.role}</h6>
                                 <button className="btn btn-light deleteBtn" onClick={openModal1}>Remove user</button>
-                                <button className="btn btn-light modifyBtn" onClick={openModal2}>Modify user's permitions</button>
+                                <button className="btn btn-light modifyBtn" onClick={openModal2}>Modify user's permissions</button>
                             </div>
                             <div className="col-sm-6">
-                            {
-                                !option ?
-                                <h6 className="text-center">Chart not available with no data</h6>
-                                :
-                                <CanvasJSChart options = {option}/>
-                            }
+                            <UserChart userId={user._id}/>
                             </div>
                         </div>
                     </div>

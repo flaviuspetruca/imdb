@@ -133,7 +133,7 @@ const BookInfo = () => {
 
     useEffect(() => {
         loadbook();
-    }, [added])
+    }, [added, token])
 
     if(book === '')
         return(
@@ -228,13 +228,14 @@ const BookInfo = () => {
                                             activeColor="#ffd700"
                                         />
                                     
-                                    <img src={book.thumbnail} className="bigThumbnail"></img>
+                                    <img alt={book.title} src={book.thumbnail} className="bigThumbnail"></img>
                                 </div>
                             </div>
                             <div className="row mt-3">
                                 <div className="col-sm-12">
-                                    <a href={book.purchaseLink} 
+                                    <a href={book.purchaseLink}  
                                         className="btn btn-light"
+                                        rel="noreferrer"
                                         target="_blank"
                                     >Read/Buy from here</a>
                                 </div>

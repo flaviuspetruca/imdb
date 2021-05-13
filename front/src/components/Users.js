@@ -13,31 +13,12 @@ const Users = () => {
 
     const [isAdmin, setIsAdmin] = useState('');
     const [users, setUsers] = useState('');
-    const [added, setAdded] = useState('');
+    const [addedUser, setAddedUser] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('Select role');
     const [email, setEmail] = useState('');
     const roles = ['admin', 'support', 'user'];
-
-    const getusers = async() => {
-        const data = {token};
-        const req = await fetch(`http://localhost:3000/getusers`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        if(req.status === 200){
-            setIsAdmin(true);
-            const res = await req.json();
-            setUsers(res);
-        }
-        else{
-            setIsAdmin(false);
-        }
-    }
 
     const adduser = async() => {
         const data = {token, username, password, role, email};
@@ -49,57 +30,87 @@ const Users = () => {
             body: JSON.stringify(data)
         })
         if(req.status === 201){
-            setAdded(true);
+            setAddedUser(true);
             setTimeout(() => {
-                closeModal();
+                closeModal1();
             }, 1000);
         }else{
-            setAdded(false);
+            setAddedUser(false);
         }
     }
 
     const customStyles = {
-        content : {
-          color                 : 'white',
-          border                : 'none',
-          width                 : '400px',
-          top                   : '50%',
-          left                  : '50%',
-          right                 : 'auto',
-          bottom                : 'auto',
-          marginRight           : '-50%',
-          transition            : 'all 0.2s ease-in-out',
-          transform             : 'translate(-50%, -50%)',
-          overflow              : 'hidden',
-          borderRadius          : '15px',
-          backgroundColor       : '#2b2b2b',
-        },
-        overlay: {
-          backgroundColor         : 'rgba(170, 170, 170, 0.4)',
-          zIndex                  : '2000'
-      },
+    content : {
+        color                 : 'white',
+        border                : 'none',
+        width                 : '400px',
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transition            : 'all 0.2s ease-in-out',
+        transform             : 'translate(-50%, -50%)',
+        overflow              : 'hidden',
+        borderRadius          : '15px',
+        backgroundColor       : '#2b2b2b',
+    },
+    overlay: {
+        backgroundColor         : 'rgba(170, 170, 170, 0.4)',
+        zIndex                  : '2000'
+    },
+
+    };
+    const [modalIsOpen1,setIsOpen1] = useState(false);
+    const [modalIsOpen2,setIsOpen2] = useState(false);
     
-      };
-      const [modalIsOpen,setIsOpen] = useState(false);
-      
-      function openModal() {
-          setIsOpen(true);
-      }
-      
-      function closeModal(){
-          setIsOpen(false);
-          setAdded('');
-      }
-      const handleSubmit = (event) => {
+    function openModal1() {
+        setIsOpen1(true);
+    }
+    
+    function closeModal1(){
+        setIsOpen1(false);
+        setAddedUser('');
+    }
+
+    function openModal2() {
+        setIsOpen2(true);
+    }
+    
+    function closeModal2(){
+        setIsOpen2(false);
+        setAddedBook('');
+    }
+
+    const handleSubmit = (event) => {
         event.preventDefault();
     }
 
-    useEffect(() => {getusers()}, [added]);
+    useEffect(() => {
+        const getusers = async() => {
+            const data = {token};
+            const req = await fetch(`http://localhost:3000/getusers`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            if(req.status === 200){
+                setIsAdmin(true);
+                const res = await req.json();
+                setUsers(res);
+            }
+            else{
+                setIsAdmin(false);
+            }
+        }
+        getusers()}, [added, token]);
 
     return ( <>
         <Modal 
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
+                isOpen={modalIsOpen1}
+                onRequestClose={closeModal1}
                 style={customStyles}
                 contentLabel="Example Modal"
                 ariaHideApp={false}
@@ -168,7 +179,71 @@ const Users = () => {
             }
             <div className="row justify-content-center">
               <button type="submit" className="btn btn-light mr-5 reviewCreate" onClick={adduser}>Add user</button>
-              <button onClick={closeModal} className="btn btn-warning cancelBtn">Cancel</button>
+              <button onClick={closeModal1} className="btn btn-warning cancelBtn">Cancel</button>
+            </div>
+           </form>
+        </Modal>
+        <Modal 
+                isOpen={modalIsOpen2}
+                onRequestClose={closeModal2}
+                style={customStyles}
+                contentLabel="Example Modal"
+                ariaHideApp={false}
+            >
+            <form onSubmit={handleSubmit}>
+              <h2 className="text-center">Add book</h2>
+              <div className="form-group">
+                <label className="create-label">Title</label>
+                <input 
+                    id="title"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAdded('');
+                                    setUsername(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+                <label className="create-label">Description</label>
+                <textarea
+                    id="description"
+                    rows="6" cols="50" 
+                    className="form-control form-control-create"
+                    value={description}
+                    onChange={e => {
+                                    setIsEdited('');
+                                    setDescription(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Password</label>
+                <input 
+                    id="password"
+                    type="password" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAdded('');
+                                    setPassword(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+            {
+                added === false?
+                <h5 className="text-center text-danger">Couldn't add book</h5>
+                :
+                added === true?
+                <h5 className="text-center text-success">Added book!</h5>
+                :
+                <></>
+            }
+            <div className="row justify-content-center">
+              <button type="submit" className="btn btn-light mr-5 reviewCreate" onClick={addbook}>Add book</button>
+              <button onClick={closeModal2} className="btn btn-warning cancelBtn">Cancel</button>
             </div>
            </form>
         </Modal>
@@ -177,7 +252,8 @@ const Users = () => {
             <div className="book-wrapper">
             <div className="book-inner">
                 <h1>Users</h1>
-                <button className="btn btn-light logout mb-2" onClick={openModal}>Add user</button>
+                <button className="btn btn-light logout mb-2" onClick={openModal1}>Add user</button>
+                <button className="btn btn-secondary logout mb-2" onClick={openModal2}>Add book</button>
                 {users.slice(0).reverse().map(u => 
                         <Card key={u._id}>
                             <Card.Body>

@@ -75,6 +75,7 @@ body, html, .App, #root, .auth-wrapper {
 }
 
 .submit{
+  border-radius: 20px !important;
   background: #603ff5;
   border: 0;
   height: 40px;
