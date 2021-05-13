@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const multer = require('multer');
+
 app.use(express.json());
 
 const login = require("./auth/login");
@@ -21,6 +23,7 @@ const modifyUser = require('./user/modifyUser');
 const getUser = require('./user/getUser');
 const getUsers = require('./user/getUsers');
 const reviewsOnDate = require('./user/reviewsOnDate');
+const addBook = require('./books/addBook');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -30,6 +33,22 @@ mongoose.connect(process.env.AUTH, { useNewUrlParser: true, useUnifiedTopology: 
 
 const cors = require('cors');
 app.use(cors());
+
+// Configure multer
+const storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './thumbnails')
+    },
+
+    filename: function(req, file, callback) {
+        callback(null, file.originalname)
+    }
+})
+
+const upload = multer({storage: storage})
+
+app.use('/images', express.static('thumbnails'))
+
 
 app.post('/login', (req, res) => {
     login(req, res);
@@ -106,6 +125,10 @@ app.post('/getusers/', (req, res) => {
 
 app.post('/reviewsondate/:userId', (req, res) => {
     reviewsOnDate(req, res);
+})
+
+app.post('/addbook', upload.single('thumbnail'), (req, res) => {
+    addBook(req, res);
 })
 
 app.listen(3000);

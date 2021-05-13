@@ -10,6 +10,7 @@ const bookSchema = new Schema({
     publishedDate: String,
     categories: [],
     thumbnail: String,
+    thumbnailPath: String,
     description: String,
     averageRating: { type: Number, default: 0},
     reviewsCount: { type: Number, default: 0 },
