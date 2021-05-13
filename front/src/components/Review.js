@@ -167,6 +167,7 @@ const Review = (props) => {
                     id="description"
                     rows="6" cols="50" 
                     className="form-control form-control-create"
+                    style={{resize: 'none'}}
                     value={description}
                     onChange={e => {
                                     setIsEdited('');

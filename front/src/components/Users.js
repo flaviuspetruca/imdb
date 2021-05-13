@@ -13,11 +13,22 @@ const Users = () => {
 
     const [isAdmin, setIsAdmin] = useState('');
     const [users, setUsers] = useState('');
+
     const [addedUser, setAddedUser] = useState('');
+    const [addedBook, setAddedBook] = useState('');
+    const [title, setTitle] = useState('');
+    const [authors, setAuthors] = useState('');
+    const [purchaseLink, setPurchaseLink] = useState('');
+    const [categories, setCategories] = useState('');
+    const [publishedDate, setPublishedDate] = useState('');
+    const [publisher, setPublisher] = useState('');
+    const [description, setDescription] = useState('');
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('Select role');
     const [email, setEmail] = useState('');
+
     const roles = ['admin', 'support', 'user'];
 
     const adduser = async() => {
@@ -39,12 +50,33 @@ const Users = () => {
         }
     }
 
+    const addbook = async() => {
+        const data = {token};
+        const req = await fetch(`http://localhost:3000/addbook`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        if(req.status === 201){
+            setAddedBook(true);
+            setTimeout(() => {
+                closeModal2();
+            }, 1000);
+        }else{
+            setAddedBook(false);
+        }
+    }
+
     const customStyles = {
     content : {
         color                 : 'white',
         border                : 'none',
         width                 : '400px',
         top                   : '50%',
+        maxHeight             : '100vh',
+        overflow              : '',
         left                  : '50%',
         right                 : 'auto',
         bottom                : 'auto',
@@ -105,7 +137,7 @@ const Users = () => {
                 setIsAdmin(false);
             }
         }
-        getusers()}, [added, token]);
+        getusers()}, [addedUser, token]);
 
     return ( <>
         <Modal 
@@ -124,7 +156,7 @@ const Users = () => {
                     type="text" 
                     className="form-control form-control-create" 
                     onChange={e => {
-                                    setAdded('');
+                                    setAddedUser('');
                                     setUsername(e.target.value);
                                   }
                               }
@@ -137,7 +169,7 @@ const Users = () => {
                     type="email" 
                     className="form-control form-control-create" 
                     onChange={e => {
-                                    setAdded('');
+                                    setAddedUser('');
                                     setEmail(e.target.value);
                                   }
                               }
@@ -150,7 +182,7 @@ const Users = () => {
                     type="password" 
                     className="form-control form-control-create" 
                     onChange={e => {
-                                    setAdded('');
+                                    setAddedUser('');
                                     setPassword(e.target.value);
                                   }
                               }
@@ -169,10 +201,10 @@ const Users = () => {
                 </DropdownButton>
                 
             {
-                added === false?
+                addedUser === false?
                 <h5 className="text-center text-danger">Couldn't add user</h5>
                 :
-                added === true?
+                addedUser === true?
                 <h5 className="text-center text-success">Added user!</h5>
                 :
                 <></>
@@ -199,8 +231,73 @@ const Users = () => {
                     type="text" 
                     className="form-control form-control-create" 
                     onChange={e => {
-                                    setAdded('');
-                                    setUsername(e.target.value);
+                                    setAddedBook('');
+                                    setTitle(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Authors</label>
+                <input 
+                    id="text"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAddedBook('');
+                                    setAuthors(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Purchase link</label>
+                <input 
+                    id="text"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAddedBook('');
+                                    setPurchaseLink(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Categories</label>
+                <input 
+                    id="text"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAddedBook('');
+                                    setCategories(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Publisher</label>
+                <input 
+                    id="text"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAddedBook('');
+                                    setPublisher(e.target.value);
+                                  }
+                              }
+                />
+              </div>
+              <div className="form-group">
+              <label className="create-label">Published on</label>
+                <input 
+                    id="text"
+                    type="text" 
+                    className="form-control form-control-create" 
+                    onChange={e => {
+                                    setAddedBook('');
+                                    setPublishedDate(e.target.value);
                                   }
                               }
                 />
@@ -212,31 +309,19 @@ const Users = () => {
                     rows="6" cols="50" 
                     className="form-control form-control-create"
                     value={description}
+                    style={{resize: 'none'}}
                     onChange={e => {
-                                    setIsEdited('');
+                                    setAddedBook('');
                                     setDescription(e.target.value);
                                   }
                               }
                 />
               </div>
-              <div className="form-group">
-              <label className="create-label">Password</label>
-                <input 
-                    id="password"
-                    type="password" 
-                    className="form-control form-control-create" 
-                    onChange={e => {
-                                    setAdded('');
-                                    setPassword(e.target.value);
-                                  }
-                              }
-                />
-              </div>
             {
-                added === false?
+                addedBook === false?
                 <h5 className="text-center text-danger">Couldn't add book</h5>
                 :
-                added === true?
+                addedBook === true?
                 <h5 className="text-center text-success">Added book!</h5>
                 :
                 <></>
