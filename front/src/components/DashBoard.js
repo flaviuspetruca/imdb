@@ -5,28 +5,28 @@ const DashBoard = (logOut) => {
 
     const [books, setBooks] = useState([]);
     const token = localStorage.getItem('token');
-    const data = {token};
 
-    const getbooks = async() => {
-        const req = await fetch("http://localhost:3000/getbooks", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        if(req.status === 200){
-            const res = await req.json();
-            setBooks(res);
-        }
-        else
-            if(req.status === 401){
-            logOut.logOut();
-        }
-    }
     useEffect(() => {
+        const getbooks = async() => {
+            const data = {token};
+            const req = await fetch("http://localhost:3000/getbooks", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            if(req.status === 200){
+                const res = await req.json();
+                setBooks(res);
+            }
+            else
+                if(req.status === 401){
+                logOut.logOut();
+            }
+        }
         getbooks();
-    }, []);
+    }, [token, logOut]);
 
     if(books.length === 0)
     return (
@@ -45,7 +45,7 @@ const DashBoard = (logOut) => {
             {
                 books.map(b => <Link key={b._id} to={`/book/${b._id}`}><div  className="col-lg-2 mb-5">
                     
-                    <img className="book" src={b.thumbnail}/>
+                    <img alt="b.title" className="book" src={b.thumbnail}/>
                     </div>
                     </Link> )
             }

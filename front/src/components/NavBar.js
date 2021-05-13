@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Navbar, Container, Nav,} from 'react-bootstrap'
-import Modal from 'react-modal'
+import {Navbar, Container, Nav} from 'react-bootstrap';
+import Modal from 'react-modal';
+import {Link} from 'react-router-dom';
 
 const NavBar = (logOut) => {
 
     const token = localStorage.getItem('token');
-
+    const [isAdmin, setIsAdmin] = useState('');
     const customStyles = {
         content : {
           color                 : 'white',
@@ -30,6 +31,17 @@ const NavBar = (logOut) => {
 
       const [categories, setCategories] = useState(false);
 
+      const [modalIsOpen,setIsOpen] = useState(false);
+      
+      function openModal() {
+          setIsOpen(true);
+      }
+      
+      function closeModal(){
+          setIsOpen(false);
+      }
+
+    useEffect(() => {
       const getCategories = async() => {
         const data = {token};
         const req = await fetch("http://localhost:3000/getcategories", {
@@ -43,19 +55,14 @@ const NavBar = (logOut) => {
           const res = await req.json();
           setCategories(res);
         }
+        else
+          if(req.status === 201){
+            setIsAdmin(true);
+            const res = await req.json();
+            setCategories(res);
+          }
       }
-
-      const [modalIsOpen,setIsOpen] = useState(false);
-      
-      function openModal() {
-          setIsOpen(true);
-      }
-      
-      function closeModal(){
-          setIsOpen(false);
-      }
-
-    useEffect(() => { getCategories() }, []);
+      getCategories() }, [token]);
 
     return ( 
     <>
@@ -79,7 +86,7 @@ const NavBar = (logOut) => {
           categories ?
             categories.map((category, index) => { if(index <= 2){ 
               const link = `/category/${category}`; 
-              return(<Nav.Link className="text-center navlink" href={link}>{category}</Nav.Link>)
+              return(<Nav.Link key={index} className="text-center navlink" href={link}>{category}</Nav.Link>)
             }
             else{  
               return;
@@ -89,12 +96,12 @@ const NavBar = (logOut) => {
           <></>
         }
       <div className="dropdown">
-        <button className="dropbtn">Navbar</button>
+        <button className="dropbtn">More</button>
           <div className="dropdown-content">
           {categories ?
                   categories.map((category, index) => { if(index > 2){
                     const link = `/category/${category}`; 
-                    return(<a className="text-center navlink" href={link}>{category}</a>)
+                    return(<a key={index} className="text-center navlink" href={link}>{category}</a>)
                   }})
               :
               <></>
@@ -102,6 +109,12 @@ const NavBar = (logOut) => {
         </div>
       </div>
       </Nav>
+          {
+            isAdmin === true?
+              <Link to={'/users'}><button className="btn btn-secondary logout mr-2">Admin</button></Link>
+            :
+            <></>
+          }
           <button className="btn btn-light logout" onClick={openModal}>Log Out</button>
     </Container>
   </Navbar> 

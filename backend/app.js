@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const multer = require('multer');
+
 app.use(express.json());
 
 const login = require("./auth/login");
@@ -15,6 +17,13 @@ const loadbook = require('./books/loadbook');
 const modifyReview = require('./books/modifyReview');
 const deleteReview = require('./books/deleteReview');
 const getCategories = require('./books/getCategories');
+const addUser = require('./user/addUser');
+const deleteUser = require('./user/deleteUser');
+const modifyUser = require('./user/modifyUser');
+const getUser = require('./user/getUser');
+const getUsers = require('./user/getUsers');
+const reviewsOnDate = require('./user/reviewsOnDate');
+const addBook = require('./books/addBook');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -24,6 +33,22 @@ mongoose.connect(process.env.AUTH, { useNewUrlParser: true, useUnifiedTopology: 
 
 const cors = require('cors');
 app.use(cors());
+
+// Configure multer
+const storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './thumbnails')
+    },
+
+    filename: function(req, file, callback) {
+        callback(null, file.originalname)
+    }
+})
+
+const upload = multer({storage: storage})
+
+app.use('/images', express.static('thumbnails'))
+
 
 app.post('/login', (req, res) => {
     login(req, res);
@@ -76,6 +101,34 @@ app.delete('/deleteReview/:reviewId', (req, res) => {
 
 app.post('/getcategories', (req, res) => {
     getCategories(req, res);
+})
+
+app.post('/adduser', (req, res) => {
+    addUser(req, res);
+})
+
+app.delete('/deleteuser/:userId', (req, res) => {
+    deleteUser(req, res);
+})
+
+app.patch('/modifyuser/:userId', (req, res) => {
+    modifyUser(req, res);
+})
+
+app.post('/getuser/:username', (req, res) => {
+    getUser(req, res);
+})
+
+app.post('/getusers/', (req, res) => {
+    getUsers(req, res);
+})
+
+app.post('/reviewsondate/:userId', (req, res) => {
+    reviewsOnDate(req, res);
+})
+
+app.post('/addbook', upload.single('thumbnail'), (req, res) => {
+    addBook(req, res);
 })
 
 app.listen(3000);

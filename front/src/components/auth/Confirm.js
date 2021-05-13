@@ -5,17 +5,17 @@ const Confirm = () => {
 
     const token = useParams().token;
     const [isRegistered, setIsRegistered] = useState('');
-    const confirmAccount = async() => {
-        const req = await fetch(`http://localhost:3000/confirm/${token}`);
-        if(req.status === 200){
-            setIsRegistered(true);
-        }
-        else
-            setIsRegistered(false);
-        
-    } 
 
-    useEffect(() => {confirmAccount()}, []);
+    useEffect(() => {
+        const confirmAccount = async() => {
+            const req = await fetch(`http://localhost:3000/confirm/${token}`);
+            if(req.status === 200){
+                setIsRegistered(true);
+            }
+            else
+                setIsRegistered(false);  
+        } 
+        confirmAccount()}, [token]);
     return ( 
         <div className="auth-wrapper">
             <div className="auth-inner">

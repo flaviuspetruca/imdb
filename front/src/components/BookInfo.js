@@ -23,9 +23,6 @@ const BookInfo = () => {
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [ratingInput, setRatingInput] = useState(true);
-    const [titleInput, setTitleInput] = useState({borderColor: "#ced4da"});
-    const [descriptionInput, setDescriptionInput] = useState({borderColor: "#ced4da", resize: 'none'});
 
     const customStyles = {
         content : {
@@ -57,8 +54,6 @@ const BookInfo = () => {
       
       function closeModal(){
           setIsOpen(false);
-          setTitleInput({borderColor: "#ced4da !important"});
-          setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
           setAdded('');
       }
 
@@ -94,12 +89,10 @@ const BookInfo = () => {
 
     const sendReview = async() => {
         if(rating === 0){
-            setRatingInput(false);
             setAdded(false);
             return;
         }
         if(title === '' || !title.trim().length){
-            setTitleInput({borderColor: "red !important"})
             setAdded(false);
             return;
         }
@@ -129,7 +122,8 @@ const BookInfo = () => {
 
     const handleEdit = (value) => {  
         setAdded(value);
-        document.location.reload();     
+        if(value === true)
+            document.location.reload();     
     }
 
     const handleSubmit = (event) => {
@@ -139,16 +133,16 @@ const BookInfo = () => {
 
     useEffect(() => {
         loadbook();
-    }, [added])
+    }, [added, token])
 
     if(book === '')
         return(
             <div className="container dashboard-container text-center">
-            <h1 className="text-light">Loading book...&#128214;</h1>
-            <div className="spinner-border spinner-border-xl text-light" role="status">
-                <span className="sr-only">Loading...</span>
+                <h1 className="text-light">Loading book...&#128214;</h1>
+                <div className="spinner-border spinner-border-xl text-light" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
-        </div>
         );
     else
         if(book !== false)
@@ -169,10 +163,8 @@ const BookInfo = () => {
                     id="title"
                     type="text" 
                     className="form-control form-control-create" 
-                    style={titleInput} 
                     onChange={e => {
                                     setAdded('');
-                                    setTitleInput({borderColor: "#ced4da !important"});
                                     setTitle(e.target.value);
                                   }
                               }
@@ -183,11 +175,9 @@ const BookInfo = () => {
                 <textarea
                     id="description"
                     rows="6" cols="50" 
-                    className="form-control form-control-create"
-                    style={descriptionInput} 
+                    className="form-control form-control-create" 
                     onChange={e => {
                                     setAdded('');
-                                    setDescriptionInput({borderColor: "#ced4da !important", resize: 'none'});
                                     setDescription(e.target.value);
                                   }
                               }
@@ -238,13 +228,14 @@ const BookInfo = () => {
                                             activeColor="#ffd700"
                                         />
                                     
-                                    <img src={book.thumbnail} className="bigThumbnail"></img>
+                                    <img alt={book.title} src={book.thumbnail} className="bigThumbnail"></img>
                                 </div>
                             </div>
                             <div className="row mt-3">
                                 <div className="col-sm-12">
-                                    <a href={book.purchaseLink} 
+                                    <a href={book.purchaseLink}  
                                         className="btn btn-light"
+                                        rel="noreferrer"
                                         target="_blank"
                                     >Read/Buy from here</a>
                                 </div>

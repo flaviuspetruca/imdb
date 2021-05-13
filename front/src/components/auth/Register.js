@@ -115,7 +115,10 @@ const Register = () => {
                     </div>
                     {
                         registered === false ? 
+                        <>
                         <h5 className="text-center text-danger">Could not register!</h5>
+                        <h5 className="text-center text-danger">Someone already registered with this email/username</h5>
+                        </>
                         :
                         registered === true ?
                         <h5 className="text-center text-success">Check your email!</h5>

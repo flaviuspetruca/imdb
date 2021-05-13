@@ -8,7 +8,10 @@ const getCategories = (req, res) => {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
         Book.distinct("categories", (err, data) => {
             if (data) {
-                res.status(200).send(data);
+                if(decodedToken.role === 'admin')
+                    res.status(201).send(data);
+                else
+                    res.status(200).send(data);
             } else {
                 res.statis(404).send("Categories not found");
             }
