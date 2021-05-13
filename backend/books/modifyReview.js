@@ -33,18 +33,36 @@ const modifyReview = (req, res) => {
                     await getAverageRating(bookId.id, function(err, avg) {
                         Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
                             if (book) {
-                                return res.status(201).send(book);
+                                Book.findOne({ "_id": bookId.id }, (err, book) => {
+                                    if (book) {
+                                        let reviewId
+                                        for (let review of book.reviews) {
+                                            if (review.username == username)
+                                                reviewId = review._id
+                                        }
+
+                                        User.updateOne({ "username": username }, 
+                                        {
+                                            "$inc" : { "reviewCount": 1 },
+                                            "$push": { "reviews": { "id": reviewId } }
+                                        },
+                                        (err, userUpdated) => {
+                                            if (userUpdated)
+                                                res.status(201).send(userUpdated);
+                                            else
+                                                res.status(404).send("User not found");
+                                        });
+                                    } else {
+                                        res.status(404).send("Book " + id + " not found");
+                                    }
+                                })
                             } else {
                                 return res.status(404).send("Book " + bookId + " not found");
                             }
                         })
                     });
             }
-            );
-
-            
-        /* res.status(201).send("OK"); */
-        } catch(err) {
+        )} catch(err) {
             res.status(401).send("Invalid token");
         }
     } else {

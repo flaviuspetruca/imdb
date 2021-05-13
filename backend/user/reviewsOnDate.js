@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const reviewsOnDate = (req, res) => {
     const token = JSON.parse(req.body.token)
+    // const token = req.body.token
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         const userId = req.params.userId
@@ -16,18 +17,24 @@ const reviewsOnDate = (req, res) => {
                         let resultReviews = []
 
                         for (let book of data) {
-                            let date = book.reviews[0].publishedAt.toLocaleDateString()
                             let dontPush = 0
+                            let date
+                            for (let reviewIndex in book.reviews) {
+                                if (book.reviews[reviewIndex].username == user.username) {
+                                    date = book.reviews[reviewIndex].publishedAt.toLocaleDateString()
 
-                            for (let review of resultReviews) {
-                                if (review.label === date)
-                                    dontPush = 1
+                                    for (let review of resultReviews) {
+                                        if (review.label === date)
+                                            dontPush = 1
+                                    }
+                                }
                             }
 
                             if (!dontPush)
                                 resultReviews.push({ 
                                     label: date
                                 })
+                            
                         }
 
                         for (let index in resultReviews) {
@@ -35,13 +42,20 @@ const reviewsOnDate = (req, res) => {
                             let date = resultReviews[index].label
 
                             for (let book of data) {
-                                let reviewDate = book.reviews[0].publishedAt.toLocaleDateString()
-                                if (date == reviewDate)
-                                    counter++
+                                for (let reviewIndex in book.reviews) {
+                                    let reviewDate
+                                    if (book.reviews[reviewIndex].username == user.username)
+                                        reviewDate = book.reviews[reviewIndex].publishedAt.toLocaleDateString()
+
+                                    if (date == reviewDate)
+                                        counter++
+                                }
                             }
 
                             resultReviews[index].y = counter;
                         }
+
+                        console.log(resultReviews)
 
                         let dates = resultReviews;
 
