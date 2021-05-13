@@ -10,19 +10,25 @@ const addUser = (req, res) => {
         if (decodedToken.role === "admin") {
             const salt = bcrypt.genSaltSync(10)
             const password = bcrypt.hashSync(req.body.password, salt)
-
-            let newUser = new User({
-                "username": req.body.username,
-                "email": req.body.email,
-                "password": password,
-                "role": req.body.role
-            })
-
-            newUser.save(newUser, (err, user) => {
+            
+            User.find({"$or": [ { "username": req.body.username }, { "email": req.body.email } ]}, (err, user) => {
                 if (user) {
-                    res.status(201).send(user)
+                    return res.status(400).send("Username or email already exists")
                 } else {
-                    res.status(409).send(err)
+                    let newUser = new User({
+                        "username": req.body.username,
+                        "email": req.body.email,
+                        "password": password,
+                        "role": req.body.role
+                    })
+        
+                    newUser.save(newUser, (err, user) => {
+                        if (user) {
+                            return res.status(201).send(user)
+                        } else {
+                            return res.status(409).send(err)
+                        }
+                    })
                 }
             })
         } else {
