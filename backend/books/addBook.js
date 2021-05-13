@@ -2,7 +2,7 @@ const Book = require('../schemas/book')
 const jwt = require('jsonwebtoken')
 
 const addBook = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token);
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if (decodedToken.role === 'admin') {
@@ -20,6 +20,7 @@ const addBook = (req, res) => {
                     "publisher": req.body.publisher,
                     "publishedDate": req.body.publishedDate,
                     "thumbnailPath": req.file.path.toString(),
+                    "thumbnail": `http://localhost:3000/images/`+ req.file.originalname,
                     "description": req.body.description,
                     "purchaseLink": req.body.purchaseLink
                 })

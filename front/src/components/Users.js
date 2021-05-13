@@ -23,6 +23,16 @@ const Users = () => {
     const [publishedDate, setPublishedDate] = useState('');
     const [publisher, setPublisher] = useState('');
     const [description, setDescription] = useState('');
+    const [selectedFile, setSelectedFile] = useState();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
+	const changeHandler = (event) => {
+        if(event)
+		    setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+        setAddedBook('');
+        console.log(event.target.files[0])
+	};
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -51,13 +61,19 @@ const Users = () => {
     }
 
     const addbook = async() => {
-        const data = {token};
+        const formdata = new FormData();
+        formdata.append("token", token);
+        formdata.append("authors", authors);
+        formdata.append("purchaseLink", purchaseLink);
+        formdata.append("description", description);
+        formdata.append("categories", categories);
+        if(!selectedFile)
+            return;
+        formdata.append("thumbnail", selectedFile, selectedFile.name);
+        formdata.append("title", title);
         const req = await fetch(`http://localhost:3000/addbook`,{
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: formdata
         })
         if(req.status === 201){
             setAddedBook(true);
@@ -75,8 +91,8 @@ const Users = () => {
         border                : 'none',
         width                 : '400px',
         top                   : '50%',
-        maxHeight             : '100vh',
-        overflow              : '',
+        maxHeight             : '90vh',
+        overflowY             : 'auto',
         left                  : '50%',
         right                 : 'auto',
         bottom                : 'auto',
@@ -112,6 +128,8 @@ const Users = () => {
     function closeModal2(){
         setIsOpen2(false);
         setAddedBook('');
+        setIsFilePicked(false);
+        setSelectedFile();
     }
 
     const handleSubmit = (event) => {
@@ -317,9 +335,25 @@ const Users = () => {
                               }
                 />
               </div>
+            <div className="row justify-content-center mb-4">
+            <input type="file" id="upload" hidden onChange={changeHandler}/>
+            {
+                isFilePicked ?
+                <>
+                <label id="uploadSelected" htmlFor="upload">{selectedFile.name}</label>
+                <button className="btn btn-danger h-25" onClick={() => {
+                    setIsFilePicked(false); setSelectedFile()}
+                }>
+                x
+                </button>
+                </>
+                :
+                <label id="upload" htmlFor="upload">Choose File</label>
+            }
+            </div>
             {
                 addedBook === false?
-                <h5 className="text-center text-danger">Couldn't add book</h5>
+                <h5 className="text-center text-danger">Make sure all field are completed</h5>
                 :
                 addedBook === true?
                 <h5 className="text-center text-success">Added book!</h5>
