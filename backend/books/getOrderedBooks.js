@@ -2,12 +2,12 @@ const Book = require('../schemas/book')
 const jwt = require('jsonwebtoken')
 
 const getOrderedBooks = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token);
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if (decodedToken.role === "admin") {
             Book.find({}, (err, data) => {
-                data = data.map(({title, reviewsCount}) => ({title, reviewsCount}))
+                data = data.map(({title, reviewsCount}) => ({label: title, y: reviewsCount}))
                 res.status(200).send(data)
             }).sort({ "reviewsCount": -1 }).limit(parseInt(req.params.limit))
         }

@@ -2,7 +2,7 @@ const Book = require('../schemas/book')
 const jwt = require('jsonwebtoken')
 
 const ratingArray = (req, res) => {
-    const token = req.body.token
+    const token = JSON.parse(req.body.token);
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if (decodedToken.role === 'admin') {
@@ -11,18 +11,18 @@ const ratingArray = (req, res) => {
                     let ratings = []
                     for (let index = 1; index <= 5; index++) {
                         ratings.push({
-                            rating: index,
-                            count: 0
+                            label: index + " stars reviews",
+                            y: 0
                         })
                     }
                     for (let book of books) {
                         if (book.averageRating > 0) {
                             let rating = Math.round(book.averageRating)
-                            let count = ratings[rating-1].count + 1
+                            let count = ratings[rating-1].y + 1
 
                             ratings[rating-1] = {
-                                rating: rating,
-                                count: count
+                                label: rating + " stars reviews",
+                                y: count
                             }
                         }
                     }

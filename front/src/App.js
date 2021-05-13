@@ -14,7 +14,7 @@ import NavBar from './components/NavBar';
 import Category from './components/Category';
 import Users from './components/Users';
 import User from './components/User';
-
+import Analytics from './components/Analytics';
 
 function App() {
 
@@ -61,6 +61,7 @@ function App() {
       <Route path="/category/:category" component={() => <Category logOut={logOut}/>}/>
       <Route path="/users" component={Users}/>
       <Route path="/user/:username" component={User}/>
+      <Route path="/analytics" component={Analytics}/>
       <Route component={NotFound} />
       </Switch>
       </Router>

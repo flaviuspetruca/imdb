@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CanvasJSReact from '../canvasjs.react';
+import NotFound from './NotFound';
 
 const UserChart = (props) => {
 
@@ -56,7 +57,7 @@ const UserChart = (props) => {
     );
     }
     else{
-        return (<>Not available</>)
+        return (<NotFound/>)
     }
 }
  

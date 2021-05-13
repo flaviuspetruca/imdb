@@ -111,11 +111,11 @@ const NavBar = (logOut) => {
       </Nav>
           {
             isAdmin === true?
-              <Link to={'/users'}><button className="btn btn-secondary logout mr-2">Admin</button></Link>
+              <Link to={'/users'}><button className="btn btn-secondary mr-2">Admin</button></Link>
             :
             <></>
           }
-          <button className="btn btn-light logout" onClick={openModal}>Log Out</button>
+          <button className="btn btn-light" onClick={openModal}>Log Out</button>
     </Container>
   </Navbar> 
   </>

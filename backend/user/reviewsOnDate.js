@@ -24,23 +24,23 @@ const reviewsOnDate = (req, res) => {
                                     date = book.reviews[reviewIndex].publishedAt.toLocaleDateString()
 
                                     for (let review of resultReviews) {
-                                        if (review.label === date)
+                                        if (review.label === date){
                                             dontPush = 1
+                                        }
                                     }
                                 }
                             }
-
-                            if (!dontPush)
+                            if (!dontPush){
                                 resultReviews.push({ 
                                     label: date
                                 })
+                            }
                             
                         }
 
                         for (let index in resultReviews) {
                             let counter = 0
                             let date = resultReviews[index].label
-
                             for (let book of data) {
                                 for (let reviewIndex in book.reviews) {
                                     let reviewDate
