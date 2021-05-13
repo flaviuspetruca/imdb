@@ -25,6 +25,7 @@ const getUsers = require('./user/getUsers');
 const reviewsOnDate = require('./user/reviewsOnDate');
 const addBook = require('./books/addBook');
 const ratingArray = require('./books/ratingArray');
+const getOrderedBooks = require('./books/getOrderedBooks');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -134,6 +135,10 @@ app.post('/addbook', upload.single('thumbnail'), (req, res) => {
 
 app.post('/ratingarray', (req, res) => {
     ratingArray(req, res);
+})
+
+app.post('/orderedbooks/:limit', (req, res) => {
+    getOrderedBooks(req, res);
 })
 
 app.listen(3000);
