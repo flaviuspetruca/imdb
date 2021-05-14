@@ -13,16 +13,19 @@ const reviewsOnDate = (req, res) => {
                 if (user) {
                     let reviewIds = user.reviews.map(r => r.id)
 
+                    // Get books with user's reviews
                     Book.find({"reviews._id": { "$in": reviewIds } }, (err, data) => {
+                        // label, y array
                         let resultReviews = []
 
+                        // Iterate through each book
                         for (let book of data) {
                             let dontPush = 0
                             let date
+                            // Find the created by the user
                             for (let reviewIndex in book.reviews) {
                                 if (book.reviews[reviewIndex].username == user.username) {
                                     date = book.reviews[reviewIndex].publishedAt.toLocaleDateString()
-
                                     for (let review of resultReviews) {
                                         if (review.label === date)
                                             dontPush = 1
