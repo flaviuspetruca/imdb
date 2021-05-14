@@ -45,7 +45,7 @@ const RatingsChart = () => {
     else
     if(ratings && ratings.length > 0){
     return ( 
-        <div className="row justify-content-center mb-3">
+        <div className="row justify-content-center mb-5">
             <CanvasJSChart options={{
                 title: {
                 text: "Ratings"

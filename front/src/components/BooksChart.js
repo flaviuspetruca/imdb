@@ -45,7 +45,7 @@ const BooksChart = () => {
     else
         if(orderedBooks && orderedBooks.length > 0){
             return (
-                <div className="row justify-content-center">
+                <div className="row justify-content-center pt-5">
                     <CanvasJSChart options={{
                         title: {
                         text: "Book Reviews"

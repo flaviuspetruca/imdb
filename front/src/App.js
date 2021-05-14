@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Register from "./components/auth/Register";
@@ -35,6 +35,26 @@ function App() {
     localStorage.removeItem('token');
     setToken('');
   } 
+
+  useEffect(() => {
+    const islogged = async() => {
+        const data = {token};
+        const req = await fetch(`http://localhost:3000/islogged`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        if(req.status === 401){
+            logOut();
+        }
+        if(req.status === 200)
+          console.log("here");
+    }
+
+    islogged();
+}, [token])
 
   if(!token)
   return (
