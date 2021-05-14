@@ -13,13 +13,42 @@ const modifyReview = (req, res) => {
 
             const reviewId = req.params.reviewId;
 
+            if (decodedToken.role === 'user') {
+                Book.updateOne(
+                    { "reviews._id": reviewId }, 
+                    {
+                        "$set": {
+                            "reviews.$": {
+                                "_id": reviewId,
+                                "username": decodedToken.username,
+                                "title": req.body.title,
+                                "stars": req.body.stars,
+                                "description": req.body.description,
+                                "publishedAt": Date.now()
+                            }
+                        }
+                    }, 
+                    async(err, review) => {
+                        if (!review)
+                            return res.status(404).send("Review " + reviewId + " not found");
+                        await getAverageRating(bookId.id, function(err, avg) {
+                            Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
+                                if (book) {
+                                    res.status(201).send(book);
+                                } else {
+                                    return res.status(404).send("Book " + bookId + " not found");
+                                }
+                            })
+                        });
+            }
+        )} else if (decodedToken.role === 'support' || decodedToken.role === 'admin') {
             Book.updateOne(
                 { "reviews._id": reviewId }, 
                 {
                     "$set": {
                         "reviews.$": {
                             "_id": reviewId,
-                            "username": decodedToken.username,
+                            "username": req.body.username,
                             "title": req.body.title,
                             "stars": req.body.stars,
                             "description": req.body.description,
@@ -33,36 +62,17 @@ const modifyReview = (req, res) => {
                     await getAverageRating(bookId.id, function(err, avg) {
                         Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
                             if (book) {
-                                Book.findOne({ "_id": bookId.id }, (err, book) => {
-                                    if (book) {
-                                        let reviewId
-                                        for (let review of book.reviews) {
-                                            if (review.username == username)
-                                                reviewId = review._id
-                                        }
-
-                                        User.updateOne({ "username": username }, 
-                                        {
-                                            "$inc" : { "reviewCount": 1 },
-                                            "$push": { "reviews": { "id": reviewId } }
-                                        },
-                                        (err, userUpdated) => {
-                                            if (userUpdated)
-                                                res.status(201).send(userUpdated);
-                                            else
-                                                res.status(404).send("User not found");
-                                        });
-                                    } else {
-                                        res.status(404).send("Book " + id + " not found");
-                                    }
-                                })
+                                res.status(201).send(book);
                             } else {
                                 return res.status(404).send("Book " + bookId + " not found");
                             }
                         })
                     });
-            }
-        )} catch(err) {
+                }
+            )
+        }
+    
+    } catch(err) {
             res.status(401).send("Invalid token");
         }
     } else {
