@@ -11,7 +11,7 @@ const addUser = (req, res) => {
             const salt = bcrypt.genSaltSync(10)
             const password = bcrypt.hashSync(req.body.password, salt)
             
-            User.find({"$or": [ { "username": req.body.username }, { "email": req.body.email } ]}, (err, user) => {
+            User.findOne({"$or": [ { "username": req.body.username }, { "email": req.body.email } ]}, (err, user) => {
                 if (user) {
                     return res.status(400).send("Username or email already exists")
                 } else {
