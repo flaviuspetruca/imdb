@@ -52,8 +52,8 @@ function App() {
         if(req.status === 200)
           console.log("here");
     }
-
-    islogged();
+    if(token)
+      islogged();
 }, [token])
 
   if(!token)

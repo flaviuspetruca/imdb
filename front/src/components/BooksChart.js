@@ -21,7 +21,6 @@ const BooksChart = () => {
         })
         if(req.status === 200){
             const res = await req.json();
-            console.log(res);
             setOrderedBooks(res);
         }
         else{

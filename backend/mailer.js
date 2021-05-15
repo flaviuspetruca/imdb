@@ -1,3 +1,33 @@
+/* const nodemailer = require('nodemailer');
+
+const sendEmail = (data) => {
+
+    let transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "petrucaflavius@gmail.com",
+            pass: "******"
+        }
+    });
+
+    let mailOptions = {
+        from: 'petrucaflavius@gmail.com',
+        to: data.emailTo,
+        subject: data.subject,
+        html: data.html
+    };
+
+    transport.sendMail(mailOptions, function(err, info){
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Register mail sent: ' + info.response);
+        }
+    }); 
+}
+
+module.exports = sendEmail; */
+
 const nodemailer = require('nodemailer');
 
 const sendEmail = (data) => {
