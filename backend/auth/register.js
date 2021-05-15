@@ -48,6 +48,7 @@ const register = (req, res) => {
                                                 subject: "Confirm email for IBDB",
                                                 html: `<a href=${link}>Click here to confirm you email.</a>`
                                             })
+                                            console.log("HERE")
                                             res.status(200).send("email sent");
                                         }).catch((err) => res.status(400).send(err))
                                     }

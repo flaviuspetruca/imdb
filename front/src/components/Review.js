@@ -53,7 +53,7 @@ const Review = (props) => {
             return;
         }
         
-        const data = {token, title, stars: rating, description, bookId};
+        const data = {token, title, stars: rating, description, bookId, username: reviewInfo.username};
         const req = await fetch(`http://localhost:3000/modify/${reviewInfo._id}`,{
             method: 'POST',
             headers: {

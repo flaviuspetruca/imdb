@@ -15,8 +15,6 @@ const populate = (req, res) => {
             purchaseLink: item.volumeInfo.infoLink
         });
 
-        console.log(book);
-
         book.save();
     }
 }

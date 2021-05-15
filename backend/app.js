@@ -24,6 +24,9 @@ const getUser = require('./user/getUser');
 const getUsers = require('./user/getUsers');
 const reviewsOnDate = require('./user/reviewsOnDate');
 const addBook = require('./books/addBook');
+const ratingArray = require('./books/ratingArray');
+const getOrderedBooks = require('./books/getOrderedBooks');
+const islogged = require('./user/islogged');
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -119,6 +122,10 @@ app.post('/getuser/:username', (req, res) => {
     getUser(req, res);
 })
 
+app.post('/islogged', (req, res) => {
+    islogged(req, res);
+})
+
 app.post('/getusers/', (req, res) => {
     getUsers(req, res);
 })
@@ -129,6 +136,14 @@ app.post('/reviewsondate/:userId', (req, res) => {
 
 app.post('/addbook', upload.single('thumbnail'), (req, res) => {
     addBook(req, res);
+})
+
+app.post('/ratingarray', (req, res) => {
+    ratingArray(req, res);
+})
+
+app.post('/orderedbooks/:limit', (req, res) => {
+    getOrderedBooks(req, res);
 })
 
 app.listen(3000);

@@ -6,7 +6,6 @@ const category = (req, res) => {
     try {
         jwt.verify(token, process.env.TOKEN_SECRET);
         let categories = req.query.category.split(',');
-        console.log(categories)
 
         Book.find({ categories: { $in: categories } }, function(err, books) {
             if (books) {

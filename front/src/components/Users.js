@@ -31,7 +31,6 @@ const Users = () => {
 		    setSelectedFile(event.target.files[0]);
 		setIsFilePicked(true);
         setAddedBook('');
-        console.log(event.target.files[0])
 	};
 
     const [username, setUsername] = useState('');
@@ -42,6 +41,8 @@ const Users = () => {
     const roles = ['admin', 'support', 'user'];
 
     const adduser = async() => {
+        if(role === 'Select role')
+            return;
         const data = {token, username, password, role, email};
         const req = await fetch(`http://localhost:3000/adduser`,{
             method: 'POST',
@@ -64,6 +65,8 @@ const Users = () => {
         const formdata = new FormData();
         formdata.append("token", token);
         formdata.append("authors", authors);
+        formdata.append("publisher", publisher);
+        formdata.append("publishedDate", publishedDate);
         formdata.append("purchaseLink", purchaseLink);
         formdata.append("description", description);
         formdata.append("categories", categories);
@@ -371,8 +374,9 @@ const Users = () => {
             <div className="book-wrapper">
             <div className="book-inner">
                 <h1>Users</h1>
-                <button className="btn btn-light logout mb-2" onClick={openModal1}>Add user</button>
-                <button className="btn btn-secondary logout mb-2" onClick={openModal2}>Add book</button>
+                <button className="btn btn-light mb-2 mr-2" onClick={openModal1}>Add user</button>
+                <button className="btn btn-secondary mb-2 mr-2" onClick={openModal2}>Add book</button>
+                <Link to={"/analytics"}><button className="btn btn-warning mb-2 mr-2">Analytics</button></Link>
                 {users.slice(0).reverse().map(u => 
                         <Card key={u._id}>
                             <Card.Body>

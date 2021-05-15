@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Register from "./components/auth/Register";
@@ -14,7 +14,7 @@ import NavBar from './components/NavBar';
 import Category from './components/Category';
 import Users from './components/Users';
 import User from './components/User';
-
+import Analytics from './components/Analytics';
 
 function App() {
 
@@ -35,6 +35,24 @@ function App() {
     localStorage.removeItem('token');
     setToken('');
   } 
+
+  useEffect(() => {
+    const islogged = async() => {
+        const data = {token};
+        const req = await fetch(`http://localhost:3000/islogged`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        if(req.status === 401){
+            logOut();
+        }
+    }
+    if(token)
+      islogged();
+}, [token])
 
   if(!token)
   return (
@@ -61,6 +79,7 @@ function App() {
       <Route path="/category/:category" component={() => <Category logOut={logOut}/>}/>
       <Route path="/users" component={Users}/>
       <Route path="/user/:username" component={User}/>
+      <Route path="/analytics" component={Analytics}/>
       <Route component={NotFound} />
       </Switch>
       </Router>
