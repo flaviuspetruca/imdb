@@ -6,12 +6,12 @@ const ratingArray = (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if (decodedToken.role === 'admin') {
-            Book.find({}, (err, books) => {
+            Book.find({"averageRating": {"$gt": 0}}, (err, books) => {
                 if (books) {
                     let ratings = []
                     for (let index = 1; index <= 5; index++) {
                         ratings.push({
-                            label: index + " stars reviews",
+                            label: index + " star books",
                             y: 0
                         })
                     }
@@ -21,7 +21,7 @@ const ratingArray = (req, res) => {
                             let count = ratings[rating-1].y + 1
 
                             ratings[rating-1] = {
-                                label: rating + " stars reviews",
+                                label: rating + " star books",
                                 y: count
                             }
                         }
