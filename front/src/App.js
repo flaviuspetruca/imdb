@@ -49,8 +49,6 @@ function App() {
         if(req.status === 401){
             logOut();
         }
-        if(req.status === 200)
-          console.log("here");
     }
     if(token)
       islogged();

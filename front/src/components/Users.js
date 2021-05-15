@@ -31,7 +31,6 @@ const Users = () => {
 		    setSelectedFile(event.target.files[0]);
 		setIsFilePicked(true);
         setAddedBook('');
-        console.log(event.target.files[0])
 	};
 
     const [username, setUsername] = useState('');
@@ -42,6 +41,8 @@ const Users = () => {
     const roles = ['admin', 'support', 'user'];
 
     const adduser = async() => {
+        if(role === 'Select role')
+            return;
         const data = {token, username, password, role, email};
         const req = await fetch(`http://localhost:3000/adduser`,{
             method: 'POST',
