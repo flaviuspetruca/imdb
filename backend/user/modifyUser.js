@@ -6,8 +6,6 @@ const modifyUser = (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
 
-        console.log(req.body)
-
         if (decodedToken.role === 'admin') {
             const userId = req.params.userId
 

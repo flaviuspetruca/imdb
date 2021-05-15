@@ -58,8 +58,6 @@ const reviewsOnDate = (req, res) => {
                             resultReviews[index].y = counter;
                         }
 
-                        console.log(resultReviews)
-
                         let dates = resultReviews;
 
                         const formatDate = (date) => {
