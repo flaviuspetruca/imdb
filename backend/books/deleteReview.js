@@ -23,7 +23,6 @@ const deleteReview = (req, res) => {
 
                         Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
                             if (book) {
-                                console.log('Updated book average rating');
                                 const username = decodedToken.username
                                 User.updateOne({ "username": username }, 
                                 {
@@ -53,7 +52,6 @@ const deleteReview = (req, res) => {
                     // Recalculate average rating of book
                     await getAverageRating(bookId.id, function(err, avg) {
                         Book.updateOne({ "_id": bookId.id }, { "averageRating": avg }, (err, book) => {
-                            console.log('Updated book average rating');
                             const username = req.body.username;
                             User.updateOne({ "username": username }, 
                             {

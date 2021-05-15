@@ -9,7 +9,6 @@ const confirm = (req, res) => {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
         RegisterInfo.findOneAndRemove({username: decodedToken.username}, (err, r) => {
             if(r){
-                console.log(r);
                 let user = new User({
                     username: r.username,
                     email: r.email,

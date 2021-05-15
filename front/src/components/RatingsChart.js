@@ -21,7 +21,6 @@ const RatingsChart = () => {
             })
             if(req.status === 200){
                 const res = await req.json();
-                console.log(res);
                 setRatings(res);
             }
             else{

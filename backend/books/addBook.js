@@ -6,7 +6,6 @@ const addBook = (req, res) => {
     try {
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET)
         if (decodedToken.role === 'admin') {
-            // console.log(req.body.authors)
             if (
                 req.body.authors.length > 0 && req.body.categories.length > 0 && 
                 req.body.title !== '' && req.body.publisher !== '' &&

@@ -31,7 +31,6 @@ const Users = () => {
 		    setSelectedFile(event.target.files[0]);
 		setIsFilePicked(true);
         setAddedBook('');
-        console.log(event.target.files[0])
 	};
 
     const [username, setUsername] = useState('');
